@@ -1,0 +1,52 @@
+{
+  "name": "character_stats",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "HP": {
+        "type": "integer"
+      },
+      "AD": {
+        "type": "integer"
+      },
+      "MS": {
+        "type": "integer"
+      },
+      "Behavior": {
+        "type": "integer"
+      },
+      "Strength": {
+        "type": "object",
+        "properties": {
+          "against_id": { "type": ["integer", "null"] },
+          "modifier": { "type": ["integer", "null"] }
+        },
+        "required": ["against_id", "modifier"],
+        "additionalProperties": false
+      },
+      "Weakness": {
+        "type": "object",
+        "properties": {
+          "against_id": { "type": ["integer", "null"] },
+          "modifier": { "type": ["integer", "null"] }
+        },
+        "required": ["against_id", "modifier"],
+        "additionalProperties": false
+      },
+      "Explanation": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "HP",
+      "AD",
+      "MS",
+      "Behavior",
+      "Strength",
+      "Weakness",
+      "Explanation"
+    ],
+    "additionalProperties": false
+  }
+}
