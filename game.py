@@ -1,3 +1,5 @@
+### This was completely copied from chatgpt
+
 import pygame
 import sys
 
