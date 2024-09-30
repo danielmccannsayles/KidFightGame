@@ -23,25 +23,6 @@ class Piece:
 			board.selected_piece = None
 			self.has_moved = True
 
-			# Pawn promotion
-			if self.notation == ' ':
-				if self.y == 0 or self.y == 7:
-					from data.classes.pieces.Queen import Queen
-					square.occupying_piece = Queen(
-						(self.x, self.y),
-						self.color,
-						board
-					)
-
-			# Move rook if king castles
-			if self.notation == 'K':
-				if prev_square.x - self.x == 2:
-					rook = board.get_piece_from_pos((0, self.y))
-					rook.move(board, board.get_square_from_pos((3, self.y)), force=True)
-				elif prev_square.x - self.x == -2:
-					rook = board.get_piece_from_pos((7, self.y))
-					rook.move(board, board.get_square_from_pos((5, self.y)), force=True)
-
 			return True
 		elif square in self.get_valid_attacks(board):
 			square.occupying_piece.hp = square.occupying_piece.hp - self.attack_dmg
@@ -51,9 +32,10 @@ class Piece:
 
 				prev_square.occupying_piece = None
 				square.occupying_piece = self
-				board.selected_piece = None
 				self.has_moved = True
 
+			# Moved this to prevent multi-attack. Should refactor selected & turn state
+			board.selected_piece = None
 			return True		
 		else:
 			board.selected_piece = None

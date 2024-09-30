@@ -2,14 +2,15 @@ import pygame
 
 from data.classes.Piece import Piece
 
+# This is the main character piece
 class Rook(Piece):
 	def __init__(self, pos, color, board, movespeed, hp, attack_dmg):
 		super().__init__(pos, color, board)
 
 		if(self.color) == 'white':
-			img_path = 'data/imgs/brutal-helm.png'
+			img_path = 'game_stuff/data/imgs/brutal-helm.png'
 		else:
-			img_path = 'data/imgs/orc-head.png'
+			img_path = 'game_stuff/data/imgs/orc-head.png'
 
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.square_width - 20, board.square_height - 20))
