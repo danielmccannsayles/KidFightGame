@@ -2,7 +2,7 @@ import pygame
 
 from data.classes.Square import Square
 from data.classes.pieces.Rook import Rook
-from data.classes.pieces.King import King
+
 
 class Board:
 	def __init__(self, width, height):
@@ -60,12 +60,6 @@ class Board:
 							2
 						)
 
-					elif piece[1] == 'K':
-						square.occupying_piece = King(
-							(x, y),
-							'white' if piece[0] == 'w' else 'black',
-							self
-						)
 
 	# TODO: Add ability to add character (will update spot on board w/ new character)
 	def add_character(self, x, y, piece: Rook):

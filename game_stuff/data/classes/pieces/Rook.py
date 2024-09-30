@@ -8,9 +8,9 @@ class Rook(Piece):
 		super().__init__(pos, color, board)
 
 		if(self.color) == 'white':
-			img_path = 'game_stuff/data/imgs/brutal-helm.png'
+			img_path = 'data/imgs/brutal-helm.png'
 		else:
-			img_path = 'game_stuff/data/imgs/orc-head.png'
+			img_path = 'data/imgs/orc-head.png'
 
 		self.img = pygame.image.load(img_path)
 		self.img = pygame.transform.scale(self.img, (board.square_width - 20, board.square_height - 20))
