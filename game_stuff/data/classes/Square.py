@@ -20,18 +20,7 @@ class Square:
 		self.attack_highlight = False
 		self.number_font  = pygame.font.SysFont( None, 16 )
 		self.hp_color = (220,20,60)
-		self.hp_rect = pygame.Rect(
-			self.abs_x,
-			self.abs_y,
-			self.width,
-			10
-		)
-		self.rect = pygame.Rect(
-			self.abs_x,
-			self.abs_y,
-			self.width,
-			self.height
-		)
+	
 
 
 
@@ -41,7 +30,20 @@ class Square:
 		return columns[self.x] + str(self.y + 1)
 
 
-	def draw(self, display):
+	def draw(self, display, x_offset, y_offset):
+		self.rect = pygame.Rect(
+			self.abs_x + x_offset,
+			self.abs_y + y_offset,
+			self.width,
+			self.height
+		)
+		self.hp_rect = pygame.Rect(
+			self.abs_x + x_offset,
+			self.abs_y + y_offset,
+			self.width,
+			10
+		)
+		
 		if self.highlight:
 			pygame.draw.rect(display, self.highlight_color, self.rect)
 		elif self.attack_highlight:
