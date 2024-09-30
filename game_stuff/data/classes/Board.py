@@ -68,8 +68,7 @@ class Board:
 
 
 	def handle_click(self, mx, my, x_offset, y_offset):
-		if(my <= 1000):
-				
+		if(mx >= x_offset) and (my >= y_offset):		
 			x = (mx - x_offset) // self.square_width
 			y = (my - y_offset) // self.square_height
 			print(x, y)

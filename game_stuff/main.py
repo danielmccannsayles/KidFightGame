@@ -30,6 +30,7 @@ while running:
 
 		elif event.type == pygame.MOUSEBUTTONDOWN:
 			if event.button == 1:
+				
 				board.handle_click(mx, my,  x_offset, y_offset)
 
 
