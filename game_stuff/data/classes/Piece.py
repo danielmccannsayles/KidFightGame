@@ -14,7 +14,7 @@ class Piece:
 			i.highlight = False
 			i.attack_highlight = False
 
-		if square in self.get_valid_moves(board) or force:
+		if square in self.get_moves(board) or force:
 			prev_square = board.get_square_from_pos(self.pos)
 			self.pos, self.x, self.y = square.pos, square.x, square.y
 
@@ -59,15 +59,6 @@ class Piece:
 					if square.occupying_piece.color != self.color:
 						output.append(square)
 		
-		return output
-
-
-	def get_valid_moves(self, board):
-		output = []
-		for square in self.get_moves(board):
-			if not board.is_in_check(self.color, board_change=[self.pos, square.pos]):
-				output.append(square)
-
 		return output
 
 
