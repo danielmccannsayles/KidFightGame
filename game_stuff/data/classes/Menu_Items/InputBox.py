@@ -6,6 +6,7 @@ COLOR_ACTIVE = pg.Color("dodgerblue2")
 FONT = pg.font.Font(None, 32)
 
 
+# https://stackoverflow.com/questions/46390231/how-can-i-create-a-text-input-box-with-pygame
 class InputBox:
     def __init__(self, x, y, w, h, text=""):
         self.rect = pg.Rect(x, y, w, h)
