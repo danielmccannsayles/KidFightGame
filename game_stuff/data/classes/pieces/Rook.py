@@ -1,5 +1,5 @@
 import pygame
-from data.classes.Piece import Piece
+from game_stuff.data.classes.Piece import Piece
 
 # Needed for relative image import
 import os

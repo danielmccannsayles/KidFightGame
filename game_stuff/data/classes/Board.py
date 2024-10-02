@@ -1,7 +1,7 @@
 import pygame
 
-from data.classes.Square import Square
-from data.classes.pieces.Rook import Rook
+from game_stuff.data.classes.Square import Square
+from game_stuff.data.classes.pieces.Rook import Rook
 
 
 # Only needs rows since we make a square boarc
