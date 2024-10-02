@@ -5,9 +5,11 @@ from data.classes.pieces.Rook import Rook
 
 
 class Board:
-	def __init__(self, width, height):
+	def __init__(self, width, height, x_offset, y_offset):
 		self.width = width
 		self.height = height
+		self.x_offset = x_offset
+		self.y_offset = y_offset
 		self.square_width = width // 8
 		self.square_height = height // 8
 		self.selected_piece = None
@@ -37,7 +39,9 @@ class Board:
 						x,
 						y,
 						self.square_width,
-						self.square_height
+						self.square_height,
+						self.x_offset, 
+						self.y_offset,
 					)
 				)
 
@@ -67,24 +71,23 @@ class Board:
 		square.occupying_piece =  piece
 
 
-	def handle_click(self, mx, my, x_offset, y_offset):
-		if(mx >= x_offset) and (my >= y_offset):		
-			x = (mx - x_offset) // self.square_width
-			y = (my - y_offset) // self.square_height
-			print(x, y)
-			clicked_square = self.get_square_from_pos((x, y))
-			print(clicked_square)
-			if self.selected_piece is None:
-				if clicked_square.occupying_piece is not None:
-					if clicked_square.occupying_piece.color == self.turn:
-						self.selected_piece = clicked_square.occupying_piece
-
-			elif self.selected_piece.move(self, clicked_square):
-				self.turn = 'white' if self.turn == 'black' else 'black'
-
-			elif clicked_square.occupying_piece is not None:
+	def handle_click(self, board_x, board_y):	
+		x = board_x // self.square_width
+		y = board_y // self.square_height
+		print(x, y)
+		clicked_square = self.get_square_from_pos((x, y))
+		print(clicked_square)
+		if self.selected_piece is None:
+			if clicked_square.occupying_piece is not None:
 				if clicked_square.occupying_piece.color == self.turn:
 					self.selected_piece = clicked_square.occupying_piece
+
+		elif self.selected_piece.move(self, clicked_square):
+			self.turn = 'white' if self.turn == 'black' else 'black'
+
+		elif clicked_square.occupying_piece is not None:
+			if clicked_square.occupying_piece.color == self.turn:
+				self.selected_piece = clicked_square.occupying_piece
 
 
 	def is_in_check(self, color, board_change=None): # board_change = [(x1, y1), (x2, y2)]
@@ -158,7 +161,7 @@ class Board:
 		return self.get_square_from_pos(pos).occupying_piece
 
 
-	def draw(self, display, x_offset, y_offset):
+	def draw(self, display):
 		if self.selected_piece is not None:
 			self.get_square_from_pos(self.selected_piece.pos).highlight = True
 			for square in self.selected_piece.get_valid_moves(self):
@@ -168,6 +171,6 @@ class Board:
 				square.attack_highlight = True
 
 		for square in self.squares:
-			square.draw(display, x_offset, y_offset )
+			square.draw(display)
 
 		
