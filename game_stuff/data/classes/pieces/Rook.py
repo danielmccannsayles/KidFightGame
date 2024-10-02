@@ -7,7 +7,7 @@ current_dir = os.path.dirname(__file__)
 
 # This is the main character piece
 class Rook(Piece):
-	def __init__(self, pos, color, board, movespeed, hp, attack_dmg):
+	def __init__(self, pos, color, board, movespeed, hp, attack_dmg, rows):
 		super().__init__(pos, color, board)
 
 		if(self.color) == 'white':
@@ -27,6 +27,7 @@ class Rook(Piece):
 		self.hp = self.max_hp
 
 		self.attack_dmg = attack_dmg
+		self.rows = rows
 		
 
 	def get_possible_moves(self, board):
@@ -36,13 +37,13 @@ class Rook(Piece):
 		x = range(self.x - self.movespeed, self.x + self.movespeed + 1)
 		print(*x, sep=",")
 		for t in y:
-			if (t>=0) and (t<8) and not (t==self.y):
+			if (t>=0) and (t<self.rows) and not (t==self.y):
 				moves_north.append(board.get_square_from_pos(
 				(self.x, t)))
 		output.append(moves_north)
 		moves_east = []
 		for t in x:
-			if (t>=0) and (t<8) and not (t==self.x):
+			if (t>=0) and (t<self.rows) and not (t==self.x):
 				moves_east.append(board.get_square_from_pos(
 					(t, self.y)
 				))
