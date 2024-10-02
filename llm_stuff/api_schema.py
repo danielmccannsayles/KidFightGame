@@ -1,6 +1,6 @@
-{
+API_SCHEMA = {
   "name": "character_stats",
-  "strict": true,
+  "strict": True,
   "schema": {
     "type": "object",
     "properties": {
@@ -23,7 +23,7 @@
           "modifier": { "type": ["integer", "null"] }
         },
         "required": ["against_id", "modifier"],
-        "additionalProperties": false
+        "additionalProperties": False
       },
       "Weakness": {
         "type": "object",
@@ -32,7 +32,7 @@
           "modifier": { "type": ["integer", "null"] }
         },
         "required": ["against_id", "modifier"],
-        "additionalProperties": false
+        "additionalProperties": False
       },
       "Explanation": {
         "type": "string"
@@ -47,6 +47,6 @@
       "Weakness",
       "Explanation"
     ],
-    "additionalProperties": false
+    "additionalProperties": False
   }
 }
