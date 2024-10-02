@@ -7,30 +7,42 @@ import os
 current_dir = os.path.dirname(__file__)
 
 
-# This is the main character piece
-class Rook(Piece):
-    def __init__(self, pos, color, board, movespeed, hp, attack_dmg, rows):
-        if (color) == "white":
-            img_path = f"{current_dir}/../../imgs/brutal-helm.png"
-        else:
-            img_path = f"{current_dir}/../../imgs/orc-head.png"
+# Base
+class Base:
+    def __init__(self, top_left, color, board):
+        self.color = color
+        self.top_left = top_left
+        self.board = board
 
+        if self.color == "white":
+            img_path = f"{current_dir}/../../imgs/w_rook.png"
+        else:
+            img_path = f"{current_dir}/../../imgs/b_rook.png"
+
+        # Pass in imgs to pieces
         img = pygame.image.load(img_path)
         img = pygame.transform.scale(
             img, (board.square_width - 20, board.square_height - 20)
         )
 
-        # DO this down here to init img
-        super().__init__(pos, color, img)
+        pieces: list[Piece] = []
+        print(f"making base color {color}")
+        for x in [
+            top_left[0],
+            top_left[0] + 1,
+        ]:  # Surely there's a more elegant way than this..
+            for y in [top_left[1], top_left[1] + 1]:
+                print(f"{x,y}")
+                pieces.append(Piece((x, y), self.color, img))
 
-        self.movespeed = movespeed
-        self.max_hp = hp
-        self.hp = self.max_hp
+        # Add the pieces to the board
+        for piece in pieces:
+            square = board.get_square_from_pos(piece.pos)
+            square.occupying_piece = piece
 
-        self.attack_dmg = attack_dmg
-        self.rows = rows
-        self.board = board
+        self.pieces = pieces
 
+    # TODO: get possible spawns around base
     def get_possible_moves(self):
         output = []
         moves_north = []

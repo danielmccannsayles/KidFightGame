@@ -5,10 +5,7 @@ from game_stuff.data.classes.pieces.Rook import Rook
 from game_stuff.data.classes.Board import Board
 
 
-class Game:
-        
-    pygame.init()
-
+class Game:   
     def __init__(self) -> None:
     
         self.WINDOW_SIZE = (1000, 1000)
@@ -25,10 +22,12 @@ class Game:
         # Kinda butchered the code since its fully OOP in the example. Should eventually switch to fully OOP
         self.all_sprites = pygame.sprite.Group()
         clear_button = Button(20, 20, 100, 30, self.resest, "Clear")
-        new_button = Button(20, 100, 100, 30, self.add_character, "New")
-        self.all_sprites.add(clear_button, new_button)
+        white_button = Button(20, 100, 150, 30, lambda: self.add_character('white'), "New White")
+        black_button = Button(20, 150, 150, 30, lambda: self.add_character('black'), "New Black")
+        self.all_sprites.add(clear_button, white_button, black_button)
 
         self.add_char = False
+        self.char_color = 'white'
         self.running = True
 
 
@@ -38,9 +37,10 @@ class Game:
 
 
     
-    def add_character(self):
+    def add_character(self, color):
         print("character ready to be added")
         self.add_char = True
+        self.char_color = color
 
 
 
@@ -77,7 +77,7 @@ class Game:
                     if event.button == 1:
                         if self.add_char:
                             print
-                            self.board.add_character(board_x, board_y)
+                            self.board.add_character(board_x, board_y, self.char_color)
                             self.add_char = False
                         else:
                             self.board.handle_click(board_x, board_y)

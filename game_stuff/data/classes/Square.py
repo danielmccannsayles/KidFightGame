@@ -26,9 +26,10 @@ class Square:
         self.highlight = False
         self.attack_highlight = False
         self.number_font = pygame.font.SysFont(None, 16)
-        self.hp_color = (220, 20, 60)
-
+        
         self.rect = pygame.Rect(self.abs_x, self.abs_y, self.width, self.height)
+        
+        self.hp_color = (220, 20, 60)
         self.hp_rect = pygame.Rect(self.abs_x, self.abs_y, self.width, 10)
 
     def draw(self, display):
@@ -43,9 +44,13 @@ class Square:
             centering_rect = self.occupying_piece.img.get_rect()
             centering_rect.center = self.rect.center
             display.blit(self.occupying_piece.img, centering_rect.topleft)
-            pygame.draw.rect(display, self.hp_color, self.hp_rect)
-            hptext = str(self.occupying_piece.hp)
-            number_image = self.number_font.render(
-                hptext, True, (10, 10, 10), (255, 255, 255)
-            )
-            display.blit(number_image, centering_rect.topleft)
+            
+            # HP bar
+            if hasattr(self.occupying_piece, 'hp'):
+                pygame.draw.rect(display, self.hp_color, self.hp_rect)
+                
+                hptext = str(self.occupying_piece.hp)
+                number_image = self.number_font.render(
+                    hptext, True, (10, 10, 10), (255, 255, 255)
+                )
+                display.blit(number_image, centering_rect.topleft)
