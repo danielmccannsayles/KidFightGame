@@ -47,7 +47,7 @@ class Board:
 
         top_base_top_left = column, top_row
         bottom_base_top_left = column, bottom_row
-        
+
         print(top_base_top_left)
         print(bottom_base_top_left)
 
@@ -56,10 +56,13 @@ class Board:
         return top_base, bot_base
 
     # TODO: Add ability to add character (will update spot on board w/ new character)
-    def add_character(self, board_x, board_y, color):
+    def add_character(self, board_x, board_y, piece: Rook):
         x = board_x // self.square_width
         y = board_y // self.square_height
-        piece = Rook((x, y), color, self, 2, 10, 2, self.rows)
+
+        # Update piece w/ x, y
+        piece.pos = (x, y)
+
         square = self.get_square_from_pos((x, y))
         if square.occupying_piece:
             print("already occupied")
