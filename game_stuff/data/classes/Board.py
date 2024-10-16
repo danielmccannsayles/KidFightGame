@@ -61,7 +61,7 @@ class Board:
         y = board_y // self.square_height
 
         # Update piece w/ x, y
-        piece.pos = (x, y)
+        piece.set_xy((x, y))
 
         square = self.get_square_from_pos((x, y))
         if square.occupying_piece:
@@ -72,13 +72,12 @@ class Board:
     def reset_board(self):
         for square in self.squares:
             square.occupying_piece = None
+        self.bases = self.make_bases()
 
     def handle_click(self, board_x, board_y):
         x = board_x // self.square_width
         y = board_y // self.square_height
-        print(x, y)
         clicked_square = self.get_square_from_pos((x, y))
-        print(clicked_square)
         if self.selected_piece is None:
             if clicked_square.occupying_piece is not None:
                 if clicked_square.occupying_piece.color == self.turn:

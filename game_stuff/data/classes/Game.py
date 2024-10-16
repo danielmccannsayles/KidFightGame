@@ -1,11 +1,22 @@
 import pygame
 
 from game_stuff.data.classes.Menu_Items.Button import Button
+from game_stuff.data.classes.Menu_Items.Clock import Game_clock
 from game_stuff.data.classes.pieces.Rook import Rook
 from game_stuff.data.classes.Board import Board
 from game_stuff.data.classes.Menu_Items.InputBox import InputBox
 
 from llm_stuff.call_gpt import generate_character_stats
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+LIGHT_BLUE = (173, 216, 230)
+
+# Font
+pygame.font.init() 
+FONT = pygame.font.SysFont(None, 36)
 
 
 class Game:
@@ -33,7 +44,13 @@ class Game:
         black_button = Button(
             20, 150, 150, 30, lambda: self.add_character("black"), "New Black"
         )
-        self.all_sprites.add(clear_button, white_button, black_button)
+        self.clock = Game_clock()
+        self.all_sprites.add(clear_button, white_button, black_button, self.clock)
+
+        # To center the text rect.
+        
+        
+
 
         self.input_box = InputBox(20, 200, 140, 32)
 
@@ -81,6 +98,7 @@ class Game:
 
     # TODO: make this a Game class
     def gameloop(self):
+        self.clock.tick()
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
             # End

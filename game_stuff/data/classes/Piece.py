@@ -7,6 +7,11 @@ class Piece:
         self.has_moved = False
         self.img = img
 
+    def set_xy(self, pos):
+        self.pos = pos
+        self.x = pos[0]
+        self.y = pos[1]
+
     def move(self, board, square, force=False):
 
         for i in board.squares:
