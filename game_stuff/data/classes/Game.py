@@ -1,7 +1,7 @@
 import pygame
 
 from game_stuff.data.classes.Menu_Items.Button import Button
-from game_stuff.data.classes.Menu_Items.Clock import Game_clock
+from game_stuff.data.classes.Menu_Items.Clock import Clock, SECOND_TICK_EVENT
 from game_stuff.data.classes.pieces.Rook import Rook
 from game_stuff.data.classes.Board import Board
 from game_stuff.data.classes.Menu_Items.InputBox import InputBox
@@ -15,7 +15,7 @@ BLUE = (0, 0, 255)
 LIGHT_BLUE = (173, 216, 230)
 
 # Font
-pygame.font.init() 
+pygame.font.init()
 FONT = pygame.font.SysFont(None, 36)
 
 
@@ -44,14 +44,8 @@ class Game:
         black_button = Button(
             20, 150, 150, 30, lambda: self.add_character("black"), "New Black"
         )
-        self.clock = Game_clock()
+        self.clock = Clock()
         self.all_sprites.add(clear_button, white_button, black_button, self.clock)
-
-        # To center the text rect.
-        
-        
-
-
         self.input_box = InputBox(20, 200, 140, 32)
 
         self.character_to_add = None
@@ -96,15 +90,18 @@ class Game:
 
         pygame.display.update()
 
-    # TODO: make this a Game class
     def gameloop(self):
-        self.clock.tick()
+        self.clock.update()
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
             # End
             if event.type == pygame.QUIT:
                 self.running = False
 
+            # Second passed
+            elif event.type == SECOND_TICK_EVENT:
+                # TODO: do somethign here
+                print("A second has passed!")
             # On board
             if (mx >= self.x_offset) and (my >= self.y_offset):
                 board_x = mx - self.x_offset

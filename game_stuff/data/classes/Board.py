@@ -16,9 +16,7 @@ class Board:
         self.turn = "white"
 
         self.rows = rows
-
         self.squares: list[Square] = self.generate_squares()
-
         self.bases = self.make_bases()
 
     def generate_squares(self):
