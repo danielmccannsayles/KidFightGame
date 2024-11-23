@@ -1,8 +1,9 @@
-import socket
-import pickle
-from _thread import start_new_thread
-from player import Player
+# Test server
 
+import socket
+from _thread import start_new_thread
+from network_stuff.player import Player
+import pickle
 
 server = "10.0.0.178"
 port = 5555
@@ -20,8 +21,11 @@ print("Waiting for a connection, Server Started")
 players = [Player(0, 0, 50, 50, (255, 0, 0)), Player(100, 100, 50, 50, (0, 0, 255))]
 
 
-def threaded_client(conn: socket.socket, pid: int):
-    conn.send(pickle.dumps(players[pid]))
+def threaded_client(conn: socket.socket, pid):
+    initial = pickle.dumps(players[pid])
+    print("initializing by sending: ", initial)
+    conn.send(initial)
+    reply = ""
     while True:
         try:
             data = pickle.loads(conn.recv(2048))
@@ -36,8 +40,8 @@ def threaded_client(conn: socket.socket, pid: int):
                 else:
                     reply = players[1]
 
-                print(f"{pid} Received: ", data)
-                print(f"{pid} Sending: ", reply)
+                print("Received: ", data)
+                print("Sending : ", reply)
 
             conn.sendall(pickle.dumps(reply))
         except:
@@ -50,7 +54,7 @@ def threaded_client(conn: socket.socket, pid: int):
 player_id = 0
 while True:
     conn, addr = s.accept()
-    print(f"Player {player_id} joined at:", addr)
+    print("Connected to:", addr)
 
     start_new_thread(threaded_client, (conn, player_id))
     player_id += 1
