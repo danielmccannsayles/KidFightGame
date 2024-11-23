@@ -1,5 +1,5 @@
 import pygame
-from game_stuff.data.classes.Piece import Piece
+from game_stuff.classes.Piece import Piece
 
 # Needed for relative image import
 import os
@@ -36,7 +36,7 @@ class Rook(Piece):
         moves_north = []
         y = range(self.y - self.movespeed, self.y + self.movespeed + 1)
         x = range(self.x - self.movespeed, self.x + self.movespeed + 1)
-        
+
         for t in y:
             if (t >= 0) and (t < self.rows) and not (t == self.y):
                 moves_north.append(self.board.get_square_from_pos((self.x, t)))

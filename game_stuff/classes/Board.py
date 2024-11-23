@@ -1,6 +1,6 @@
-from game_stuff.data.classes.Square import Square
-from game_stuff.data.classes.pieces.Rook import Rook
-from game_stuff.data.classes.pieces.Base import Base
+from game_stuff.classes.Square import Square
+from game_stuff.classes.pieces.Rook import Rook
+from game_stuff.classes.pieces.Base import Base
 
 
 # Only needs rows since we make a square board

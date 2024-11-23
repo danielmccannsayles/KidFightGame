@@ -1,5 +1,5 @@
 import pygame
-from game_stuff.data.classes.Game import Game
+from game_stuff.classes.Game import Game
 
 
 game = Game()

@@ -1,10 +1,10 @@
 import pygame
 
-from game_stuff.data.classes.Menu_Items.Button import Button
-from game_stuff.data.classes.Menu_Items.Clock import Clock, SECOND_TICK_EVENT
-from game_stuff.data.classes.pieces.Rook import Rook
-from game_stuff.data.classes.Board import Board
-from game_stuff.data.classes.Menu_Items.InputBox import InputBox
+from game_stuff.classes.Menu_Items.Button import Button
+from game_stuff.classes.Menu_Items.Clock import Clock, SECOND_TICK_EVENT
+from game_stuff.classes.pieces.Rook import Rook
+from game_stuff.classes.Board import Board
+from game_stuff.classes.Menu_Items.InputBox import InputBox
 
 from llm_stuff.call_gpt import generate_character_stats
 
