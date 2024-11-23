@@ -53,7 +53,6 @@ class Board:
         bot_base = Base(bottom_base_top_left, "black", self)
         return top_base, bot_base
 
-    # TODO: Add ability to add character (will update spot on board w/ new character)
     def add_character(self, board_x, board_y, piece: Rook):
         x = board_x // self.square_width
         y = board_y // self.square_height

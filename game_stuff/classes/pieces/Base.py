@@ -27,10 +27,9 @@ class Base:
 
         pieces: list[Piece] = []
         print(f"making base color {color}")
-        for x in [
-            top_left[0],
-            top_left[0] + 1,
-        ]:  # Surely there's a more elegant way than this..
+
+        # Surely there's a more elegant way than this..
+        for x in [top_left[0], top_left[0] + 1]:
             for y in [top_left[1], top_left[1] + 1]:
                 print(f"{x,y}")
                 pieces.append(Piece((x, y), self.color, img))

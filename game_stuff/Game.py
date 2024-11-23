@@ -7,6 +7,7 @@ from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
 
 from llm_stuff.call_gpt import generate_character_stats
+from testing.mock_responses import LARGE_SPIKED_BALL_RESPONSE
 
 # Colors
 WHITE = (255, 255, 255)
@@ -21,8 +22,8 @@ FONT = pygame.font.SysFont(None, 36)
 
 class Game:
     def __init__(self) -> None:
-        self.WINDOW_SIZE = (1000, 1000)
-        self.BOARD_SIZE = 800
+        self.WINDOW_SIZE = (1000, 800)
+        self.BOARD_SIZE = 700
         self.ROWS = 10
 
         self.x_offset = self.WINDOW_SIZE[0] - self.BOARD_SIZE
@@ -60,8 +61,11 @@ class Game:
         self.input_box.clear()
 
         print(f"Calling GPT w/ {text}")
-        # Call GPT
-        response = generate_character_stats(text)
+        # TODO: stop mocking
+        # Mocked response for now
+        response = LARGE_SPIKED_BALL_RESPONSE
+        # response = generate_character_stats(text)
+
         print(response)
         print("Finished.. character ready to be added")
         # Add w/ default pos - will update later
