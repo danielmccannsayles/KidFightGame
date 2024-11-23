@@ -1,4 +1,6 @@
 import socket
+import pickle
+from network_stuff.player import Player
 
 
 class Network:
@@ -7,21 +9,21 @@ class Network:
         self.server = "10.0.0.178"
         self.port = 5555
         self.address = (self.server, self.port)
-        self.pos = self.connect()
+        self.p = self.connect()
 
-    def getPos(self):
-        return self.pos
+    def get_p(self):
+        return self.p
 
-    def connect(self):
+    def connect(self) -> Player:
         try:
             self.client.connect(self.address)
-            return self.client.recv(2048).decode()
+            return pickle.loads(self.client.recv(2048))
         except:
             pass
 
-    def send(self, data: str):
+    def send(self, player: Player):
         try:
-            self.client.send(str.encode(data))
-            return self.client.recv(2048).decode()
+            self.client.send(pickle.dumps(player))
+            return pickle.loads(self.client.recv(2048))  # Pickle is empty here
         except socket.error as e:
             print(e)
