@@ -11,14 +11,13 @@ clientNumber = 0
 
 
 class Player:
-    def __init__(self, pos: tuple, width, height, color):
-        self.x = pos[0]
-        self.y = pos[1]
-
+    def __init__(self, x, y, width, height, color):
+        self.x = x
+        self.y = y
         self.width = width
         self.height = height
         self.color = color
-        self.rect = (self.x, self.y, width, height)
+        self.rect = (x, y, width, height)
         self.vel = 3
 
     def draw(self, win):
@@ -49,29 +48,22 @@ def redrawWindow(win: pygame.Surface, player: Player, player2: Player):
     win.fill((255, 255, 255))
     player.draw(win)
     player2.draw(win)
-
     pygame.display.update()
 
 
 def main():
     run = True
     n = Network()
-    start_pos = read_pos(n.getPos())
-    print("start pos: ", start_pos)
-
-    color = (0, 255, 0)
-    p = Player(start_pos, 100, 100, color)
-    p2 = Player((0, 0), 100, 100, color)
+    startPos = read_pos(n.getPos())
+    p = Player(startPos[0], startPos[1], 100, 100, (0, 255, 0))
+    p2 = Player(0, 0, 100, 100, (255, 0, 0))
     clock = pygame.time.Clock()
 
     while run:
         clock.tick(60)
-        # Send current position and get opponent position
-        p2pos_str = n.send(make_pos((p.x, p.y)))
-        p2pos = read_pos(p2pos_str)
-        print("p2 pos: ", p2pos)
-        p2.x = p2pos[0]
-        p2.y = p2pos[1]
+        p2Pos = read_pos(n.send(make_pos((p.x, p.y))))
+        p2.x = p2Pos[0]
+        p2.y = p2Pos[1]
         p2.update()
 
         for event in pygame.event.get():
@@ -80,7 +72,7 @@ def main():
                 pygame.quit()
 
         p.move()
-        redrawWindow(win, p)
+        redrawWindow(win, p, p2)
 
 
 main()
