@@ -39,7 +39,7 @@ class Base:
             img_path = f"{current_dir}/../../imgs/b_rook.png"
         img = pygame.image.load(img_path)
         img = pygame.transform.scale(
-            img, (self.board.square_width - 20, self.board.square_height - 20)
+            img, (self.board.square_size - 20, self.board.square_size - 20)
         )
 
         # Pieces
@@ -88,4 +88,7 @@ class Base:
 
     # Check for non occupied spawns..
     def get_spawn(self):
-        return random.choice(self.spawns)
+        open_squares = [
+            square for square in self.spawns if square.occupying_piece == None
+        ]
+        return random.choice(open_squares)

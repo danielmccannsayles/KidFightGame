@@ -18,12 +18,12 @@ class Square:
         self.height = height
         self.row = row
         self.column = column
-
         self.pos = (self.row, self.column)
 
         # Pixel coords
-        self.x = (self.row * width) + x_offset
-        self.y = (self.column * height) + y_offset
+        # Note that column is actually how far it is in the x direction, while the row is how far it is in the y direction
+        self.x = (self.column * width) + x_offset
+        self.y = (self.row * height) + y_offset
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 

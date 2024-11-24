@@ -30,9 +30,7 @@ class Game:
         self.y_offset = self.WINDOW_SIZE[1] - self.BOARD_SIZE
 
         self.screen = pygame.display.set_mode(self.WINDOW_SIZE)
-        self.board = Board(
-            self.BOARD_SIZE, self.BOARD_SIZE, self.x_offset, self.y_offset, self.ROWS
-        )
+        self.board = Board(self.BOARD_SIZE, self.x_offset, self.y_offset, self.ROWS)
         # menu = Menu(x_offset, WINDOW_SIZE[1])
 
         # Sprites for buttons - https://stackoverflow.com/questions/47639826/pygame-button-single-click
@@ -64,21 +62,27 @@ class Game:
     def add_character(self, color):
         text = self.input_box.text
         self.input_box.clear()
-
-        response = LARGE_SPIKED_BALL_RESPONSE
         # response = generate_character_stats(text)
 
+        response = LARGE_SPIKED_BALL_RESPONSE
+
         print(response)
-        # Add w/ default pos - will update later
-        self.character_to_add = Character(  # TODO: update this rook to accept an object and initialize from there or sumn
+
+        # Get a spawn location for white or black
+        base = self.board.bases[color]
+        spawn = base.get_spawn()
+
+        character = Character(  # TODO: update this to accept an object and initialize from there or sumn
             (0, 0),
             color=color,
             board=self.board,
             attack_dmg=response["AD"],
             hp=response["HP"],
             movespeed=response["MS"],
-            rows=self.ROWS,
         )
+
+        self.board.add_character(spawn, character)
+        # Add w/ default pos - will update later
 
     def handle_menu_click(self, event):
         for button in self.all_sprites:

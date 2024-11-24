@@ -4,14 +4,15 @@ from game_stuff.classes.pieces.Base import Base
 
 
 # Only needs rows since we make a square board
+# NOTE on positioning system. rows and columns start at 0,0 in the top left corner.
+# Rows are calculated from the y position
 class Board:
-    def __init__(self, width, height, x_offset, y_offset, rows: int):
-        self.width = width
-        self.height = height
+    def __init__(self, size: int, x_offset, y_offset, rows: int):
+        self.width = size
+        self.height = size
         self.x_offset = x_offset
         self.y_offset = y_offset
-        self.square_width = width // rows
-        self.square_height = height // rows
+        self.square_size = size // rows
         self.selected_piece = None
         self.turn = "white"
 
@@ -27,8 +28,8 @@ class Board:
                     Square(
                         row,
                         column,
-                        self.square_width,
-                        self.square_height,
+                        self.square_size,
+                        self.square_size,
                         self.x_offset,
                         self.y_offset,
                     )
@@ -50,9 +51,9 @@ class Board:
         print(top_base_top_left)
         print(bottom_base_top_left)
 
-        top_base = Base(top_base_top_left, "white", self)
-        bot_base = Base(bottom_base_top_left, "black", self)
-        return top_base, bot_base
+        w_base = Base(top_base_top_left, "white", self)
+        b_base = Base(bottom_base_top_left, "black", self)
+        return {"white": w_base, "black": b_base}
 
     def reset_board(self):
         for square in self.squares:
@@ -60,19 +61,14 @@ class Board:
         self.bases = self.make_bases()
 
     # row, column
-    def get_square_from_board_pos(self, pos) -> Square:
+    def get_square_from_board_pos(self, pos: tuple[int]) -> Square:
         for square in self.squares:
-            if (square.row, square.column) == (pos[0], pos[1]):
+            if square.pos == pos:
                 return square
 
-    def add_character(self, board_x, board_y, piece: Character):
-        x = board_x // self.square_width
-        y = board_y // self.square_height
+    def add_character(self, square: Square, piece: Character):
+        piece.set_pos((square.row, square.column))
 
-        # Update piece w/ x, y
-        piece.set_pos((x, y))
-
-        square = self.get_square_from_board_pos((x, y))
         if square.occupying_piece:
             print("already occupied")
         else:
@@ -92,8 +88,8 @@ class Board:
 
     # Deprecated click methods
     # def handle_click(self, board_x, board_y):
-    #     x = board_x // self.square_width
-    #     y = board_y // self.square_height
+    #     x = board_x // self.square_size
+    #     y = board_y // self.square_size
     #     clicked_square = self.get_square_from_board_pos((x, y))
     #     if self.selected_piece is None:
     #         if clicked_square.occupying_piece is not None:
