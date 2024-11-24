@@ -2,7 +2,7 @@ import pygame
 
 from game_stuff.classes.Menu_Items.Button import Button
 from game_stuff.classes.Menu_Items.Clock import Clock, SECOND_TICK_EVENT
-from game_stuff.classes.pieces.Rook import Rook
+from game_stuff.classes.pieces.Character import Character
 from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
 
@@ -52,7 +52,6 @@ class Game:
         self.character_to_add = None
         self.running = True
 
-    # Button functions
     def reset(self):
         self.board.reset_board()
 
@@ -60,16 +59,12 @@ class Game:
         text = self.input_box.text
         self.input_box.clear()
 
-        print(f"Calling GPT w/ {text}")
-        # TODO: stop mocking
-        # Mocked response for now
         response = LARGE_SPIKED_BALL_RESPONSE
         # response = generate_character_stats(text)
 
         print(response)
-        print("Finished.. character ready to be added")
         # Add w/ default pos - will update later
-        self.character_to_add = Rook(  # TODO: update this rook to accept an object and initialize from there or sumn
+        self.character_to_add = Character(  # TODO: update this rook to accept an object and initialize from there or sumn
             (0, 0),
             color=color,
             board=self.board,
@@ -79,7 +74,6 @@ class Game:
             rows=self.ROWS,
         )
 
-    # Handle a click on the menu (not on the board)
     def handle_menu_click(self, event):
         for button in self.all_sprites:
             button.handle_event(event)
@@ -98,14 +92,13 @@ class Game:
         self.clock.update()
         mx, my = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            # End
             if event.type == pygame.QUIT:
                 self.running = False
 
-            # Second passed
             elif event.type == SECOND_TICK_EVENT:
                 # TODO: do somethign here
                 print("A second has passed!")
+
             # On board
             if (mx >= self.x_offset) and (my >= self.y_offset):
                 board_x = mx - self.x_offset
@@ -115,7 +108,6 @@ class Game:
                     # Left Click
                     if event.button == 1:
                         if self.character_to_add is not None:
-                            print
                             self.board.add_character(
                                 board_x, board_y, self.character_to_add
                             )
@@ -123,7 +115,7 @@ class Game:
                         else:
                             self.board.handle_click(board_x, board_y)
 
-            # Off board
+            # On menu
             else:
                 self.handle_menu_click(event)
 

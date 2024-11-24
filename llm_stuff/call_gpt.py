@@ -1,8 +1,9 @@
 import openai
 import json
-from .secret import OPENAI_KEY
-from .api_schema import API_SCHEMA
-from .prompt import CHARACTER_PROMPT
+from llm_stuff.secret import OPENAI_KEY
+from llm_stuff.api_schema import API_SCHEMA
+from llm_stuff.prompt import CHARACTER_PROMPT
+from testing.mock_responses import TEST_CHARACTER_LIST, LARGE_SPIKED_BALL_RESPONSE
 
 client = openai.OpenAI(api_key=OPENAI_KEY)
 
@@ -23,12 +24,6 @@ client = openai.OpenAI(api_key=OPENAI_KEY)
   },
   "Explanation": "The mobile pumpkin has modera.."
 }"""
-
-# TODO: get rid of this and generate the char list programatically
-TEST_CHARACTER_LIST = [
-    {"id": 0, "description": "rats with bombs attached"},
-    {"id": 1, "description": "stone golem"},
-]
 
 
 # This is currently blocking btw. Can make it async in the future if needed
@@ -57,8 +52,3 @@ def generate_character_stats(
     )
     reply = json.loads(response.choices[0].message.content)
     return reply
-
-
-description = "Five headed sea serpent"
-
-# generate_character_stats(description)

@@ -1,4 +1,7 @@
-class Piece:
+# Default Piece
+
+
+class DefaultPiece:
     def __init__(self, pos, color, img):
         self.pos = pos
         self.x = pos[0]
@@ -63,7 +66,3 @@ class Piece:
                         output.append(square)
 
         return output
-
-    # True for all pieces except pawn
-    def attacking_squares(self, board):
-        return self.get_moves(board)

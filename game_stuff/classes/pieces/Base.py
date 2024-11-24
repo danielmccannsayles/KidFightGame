@@ -1,5 +1,5 @@
 import pygame
-from game_stuff.classes.Piece import Piece
+from game_stuff.classes.pieces.DefaultPiece import DefaultPiece
 
 # Needed for relative image import
 import os
@@ -25,14 +25,14 @@ class Base:
             img, (board.square_width - 20, board.square_height - 20)
         )
 
-        pieces: list[Piece] = []
+        pieces: list[DefaultPiece] = []
         print(f"making base color {color}")
 
         # Surely there's a more elegant way than this..
         for x in [top_left[0], top_left[0] + 1]:
             for y in [top_left[1], top_left[1] + 1]:
                 print(f"{x,y}")
-                pieces.append(Piece((x, y), self.color, img))
+                pieces.append(DefaultPiece((x, y), self.color, img))
 
         # Add the pieces to the board
         for piece in pieces:

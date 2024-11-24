@@ -1,5 +1,5 @@
 import pygame
-from game_stuff.classes.Piece import Piece
+from game_stuff.classes.pieces.DefaultPiece import DefaultPiece
 
 # Needed for relative image import
 import os
@@ -8,7 +8,7 @@ current_dir = os.path.dirname(__file__)
 
 
 # This is the main character piece
-class Rook(Piece):
+class Character(DefaultPiece):
     def __init__(self, pos, color, board, movespeed, hp, attack_dmg, rows):
         if (color) == "white":
             img_path = f"{current_dir}/../../imgs/brutal-helm.png"
