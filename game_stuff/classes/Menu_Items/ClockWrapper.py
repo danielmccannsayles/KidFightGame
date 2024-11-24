@@ -1,6 +1,6 @@
 import pygame
+from game_stuff.events import SECOND_TICK_EVENT
 
-SECOND_TICK_EVENT = pygame.USEREVENT + 1
 CLOCK_FONT = pygame.font.SysFont(None, 36)
 
 

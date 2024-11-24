@@ -1,12 +1,14 @@
 import pygame
+import asyncio
 
 from game_stuff.classes.Menu_Items.Button import Button
-from game_stuff.classes.Menu_Items.ClockWrapper import ClockWrapper, SECOND_TICK_EVENT
+from game_stuff.classes.Menu_Items.ClockWrapper import ClockWrapper
 from game_stuff.classes.pieces.Character import Character
 from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
+from game_stuff.events import SECOND_TICK_EVENT, CHARACTER_RESPONSE_EVENT
 
-from llm_stuff.call_gpt import generate_character_stats
+from llm_stuff.call_gpt import acreate_character
 from testing.mock_responses import LARGE_SPIKED_BALL_RESPONSE
 
 # Colors
@@ -38,15 +40,16 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         clear_button = Button(20, 20, 100, 30, self.reset, "Clear")
         white_button = Button(
-            20, 100, 150, 30, lambda: self.add_character("white"), "New White"
+            20, 100, 150, 30, lambda: self.create_character("white"), "New White"
         )
         black_button = Button(
-            20, 150, 150, 30, lambda: self.add_character("black"), "New Black"
+            20, 150, 150, 30, lambda: self.create_character("black"), "New Black"
         )
         self.clock_wrapper = ClockWrapper((20, 20))
         self.all_sprites.add(
             clear_button, white_button, black_button, self.clock_wrapper
         )
+        self.loading_character = False
 
         # Enable key repeat (delay: 400ms, interval: 50ms) - do this so the input box keys can be held down
         pygame.key.set_repeat(400, 50)
@@ -58,20 +61,36 @@ class Game:
     def reset(self):
         self.board.reset_board()
 
-    # Add a character to a random position near the base
-    def add_character(self, color):
-        text = self.input_box.text
+    # Asynchronously generate a character
+    def create_character(self, color):
+        if self.loading_character:
+            # TODO: add a disabled style
+            print("still loading")
+            return
+
+        self.loading_character = True
+        description = self.input_box.text
+        if description == "":
+            description = "bland default character"
+
         self.input_box.clear()
-        # response = generate_character_stats(text)
 
-        response = LARGE_SPIKED_BALL_RESPONSE
+        print(f"calling async w/ {description}, {color}")
+        # Call asynchronously
+        # run in coroutin_threadsafe to avoid blocking the game loop
+        asyncio.run_coroutine_threadsafe(
+            acreate_character(description, color), asyncio.get_event_loop()
+        )
 
-        print(response)
+    # Add a character once its generated
+    def add_character_game(self, event_dict):
+        print(event_dict)
+        color = event_dict["color"]
+        response = event_dict["response"]
+        print(f"adding character, {color}, {response}")
 
-        # Get a spawn location for white or black
         base = self.board.bases[color]
         spawn = base.get_spawn()
-
         character = Character(  # TODO: update this to accept an object and initialize from there or sumn
             (0, 0),
             color=color,
@@ -80,9 +99,7 @@ class Game:
             hp=response["HP"],
             movespeed=response["MS"],
         )
-
         self.board.add_character(spawn, character)
-        # Add w/ default pos - will update later
 
     def handle_menu_click(self, event):
         for button in self.all_sprites:
@@ -105,7 +122,14 @@ class Game:
 
             elif event.type == SECOND_TICK_EVENT:
                 # TODO: do somethign here
-                print("A second has passed!")
+                # print("A second has passed!")
+                pass
+
+            elif event.type == CHARACTER_RESPONSE_EVENT:
+                print("helo?")
+                print(f"Received custom event with data: {event.dict}")
+                self.add_character_game(event.dict)
+                self.loading_character = False
 
             # General events
             else:

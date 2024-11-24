@@ -1,0 +1,4 @@
+import pygame
+
+SECOND_TICK_EVENT = pygame.USEREVENT + 1
+CHARACTER_RESPONSE_EVENT = pygame.USEREVENT + 2
