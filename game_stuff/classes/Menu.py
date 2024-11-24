@@ -1,5 +1,5 @@
-
-#TODO: Move button logic stuff into this menu area probably
+### NOT BEING USED CURRENTLY
+# TODO: Move button logic stuff into this menu area probably
 class Menu:
     def __init__(self, width, height):
         self.width = width

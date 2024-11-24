@@ -11,37 +11,45 @@ class InputBox:
     def __init__(self, x, y, w, h, text=""):
         self.rect = pg.Rect(x, y, w, h)
         self.color = COLOR_INACTIVE
-        self.text = text
-        self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
+        self.text = text
+        self.draw_text()
 
     def handle_event(self, event):
+        # Mouse down
         if event.type == pg.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect.
             if self.rect.collidepoint(event.pos):
-                # Toggle the active variable.
-                self.active = not self.active
+                self.update_active(True)
             else:
-                self.active = False
-            # Change the current color of the input box.
-            self.color = COLOR_ACTIVE if self.active else COLOR_INACTIVE
+                self.update_active(False)
+
+        # On any keydown event, trigger the box. I
         if event.type == pg.KEYDOWN:
-            if self.active:
-                if event.key == pg.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                else:
-                    self.text += event.unicode
-                # Re-render the text.
-                self.txt_surface = FONT.render(self.text, True, self.color)
+            if not self.active:
+                self.update_active(True)
+
+            if event.key == pg.K_BACKSPACE:
+                self.text = self.text[:-1]
+            else:
+                self.text += event.unicode
+            self.draw_text()
+
+    def update_active(self, active: bool):
+        self.active = active
+        self.color = COLOR_ACTIVE if active else COLOR_INACTIVE
 
     def clear(self):
-        print("clearing box I hope")
         self.text = ""
 
-    def update(self):
-        # Resize the box if the text is too long.
-        width = max(200, self.txt_surface.get_width() + 10)
-        self.rect.w = width
+    def draw_text(self):
+        self.txt_surface = FONT.render(self.text, True, self.color)
+        self.check_update_size()
+
+    def check_update_size(self):
+        text_width = self.txt_surface.get_width() + 10
+        if text_width > self.rect.w:
+            self.rect.w = text_width
 
     def draw(self, screen):
         # Blit the text.

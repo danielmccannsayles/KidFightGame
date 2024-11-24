@@ -47,6 +47,9 @@ class Game:
         )
         self.clock = Clock()
         self.all_sprites.add(clear_button, white_button, black_button, self.clock)
+
+        # Enable key repeat (delay: 400ms, interval: 50ms) - do this so the input box keys can be held down
+        pygame.key.set_repeat(400, 50)
         self.input_box = InputBox(20, 200, 140, 32)
 
         self.character_to_add = None
@@ -77,7 +80,6 @@ class Game:
     def handle_menu_click(self, event):
         for button in self.all_sprites:
             button.handle_event(event)
-        self.input_box.handle_event(event)
 
     def draw(self, display):
         display.fill("white")
@@ -100,7 +102,7 @@ class Game:
                 print("A second has passed!")
 
             # On board
-            if (mx >= self.x_offset) and (my >= self.y_offset):
+            elif (mx >= self.x_offset) and (my >= self.y_offset):
                 board_x = mx - self.x_offset
                 board_y = my - self.y_offset
                 # Click
@@ -118,5 +120,9 @@ class Game:
             # On menu
             else:
                 self.handle_menu_click(event)
+
+            # TODO: should everything run here?
+            # Stuff that runs on its own?
+            self.input_box.handle_event(event)
 
         self.draw(self.screen)

@@ -1,6 +1,6 @@
 LARGE_SPIKED_BALL_RESPONSE = {
     "HP": 4,
-    "AD": 5,
+    "AD": 1,
     "MS": 1,
     "Behavior": 3,
     "Strength": {"against_id": None, "modifier": None},

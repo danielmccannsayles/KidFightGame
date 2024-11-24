@@ -7,7 +7,7 @@ import os
 current_dir = os.path.dirname(__file__)
 
 
-# Base
+# Home Base Class
 class Base:
     def __init__(self, top_left, color, board):
         self.color = color
