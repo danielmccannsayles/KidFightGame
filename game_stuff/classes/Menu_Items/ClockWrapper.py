@@ -4,12 +4,12 @@ SECOND_TICK_EVENT = pygame.USEREVENT + 1
 CLOCK_FONT = pygame.font.SysFont(None, 36)
 
 
-class Clock(pygame.sprite.Sprite):
-    def __init__(self):
+class ClockWrapper(pygame.sprite.Sprite):
+    def __init__(self, pos):
         super().__init__()
         self.game_clock = pygame.time.Clock()
         self.clock_surface = pygame.Surface((100, 32))
-        self.rect = self.clock_surface.get_rect(topleft=(800, 20))
+        self.rect = self.clock_surface.get_rect(topleft=(pos))
 
         # State
         self.z = 0  # Elapsed time in milliseconds

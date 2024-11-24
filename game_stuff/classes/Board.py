@@ -43,12 +43,27 @@ class Board:
         bottom_row = self.rows - 2
         top_row = 0
 
-        top_base_top_left = column, top_row
-        bottom_base_top_left = column, bottom_row
+        top_base_top_left = top_row, column
+        bottom_base_top_left = bottom_row, column
+
+        print("making bases")
+        print(top_base_top_left)
+        print(bottom_base_top_left)
 
         top_base = Base(top_base_top_left, "white", self)
         bot_base = Base(bottom_base_top_left, "black", self)
         return top_base, bot_base
+
+    def reset_board(self):
+        for square in self.squares:
+            square.occupying_piece = None
+        self.bases = self.make_bases()
+
+    # row, column
+    def get_square_from_board_pos(self, pos) -> Square:
+        for square in self.squares:
+            if (square.row, square.column) == (pos[0], pos[1]):
+                return square
 
     def add_character(self, board_x, board_y, piece: Character):
         x = board_x // self.square_width
@@ -63,36 +78,6 @@ class Board:
         else:
             square.occupying_piece = piece
 
-    def reset_board(self):
-        for square in self.squares:
-            square.occupying_piece = None
-        self.bases = self.make_bases()
-
-    def handle_click(self, board_x, board_y):
-        x = board_x // self.square_width
-        y = board_y // self.square_height
-        clicked_square = self.get_square_from_board_pos((x, y))
-        if self.selected_piece is None:
-            if clicked_square.occupying_piece is not None:
-                if clicked_square.occupying_piece.color == self.turn:
-                    self.selected_piece = clicked_square.occupying_piece
-
-        elif self.selected_piece.move(self, clicked_square):
-            self.turn = "white" if self.turn == "black" else "black"
-
-        elif clicked_square.occupying_piece is not None:
-            if clicked_square.occupying_piece.color == self.turn:
-                self.selected_piece = clicked_square.occupying_piece
-
-    # row, column
-    def get_square_from_board_pos(self, pos) -> Square:
-        for square in self.squares:
-            if (square.row, square.column) == (pos[0], pos[1]):
-                return square
-
-    def get_piece_from_pos(self, pos):
-        return self.get_square_from_board_pos(pos).occupying_piece
-
     def draw(self, display):
         if self.selected_piece is not None:
             self.get_square_from_board_pos(self.selected_piece.pos).highlight = True
@@ -104,3 +89,20 @@ class Board:
 
         for square in self.squares:
             square.draw(display)
+
+    # Deprecated click methods
+    # def handle_click(self, board_x, board_y):
+    #     x = board_x // self.square_width
+    #     y = board_y // self.square_height
+    #     clicked_square = self.get_square_from_board_pos((x, y))
+    #     if self.selected_piece is None:
+    #         if clicked_square.occupying_piece is not None:
+    #             if clicked_square.occupying_piece.color == self.turn:
+    #                 self.selected_piece = clicked_square.occupying_piece
+
+    #     elif self.selected_piece.move(self, clicked_square):
+    #         self.turn = "white" if self.turn == "black" else "black"
+
+    #     elif clicked_square.occupying_piece is not None:
+    #         if clicked_square.occupying_piece.color == self.turn:
+    #             self.selected_piece = clicked_square.occupying_piece

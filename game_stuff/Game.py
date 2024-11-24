@@ -1,7 +1,7 @@
 import pygame
 
 from game_stuff.classes.Menu_Items.Button import Button
-from game_stuff.classes.Menu_Items.Clock import Clock, SECOND_TICK_EVENT
+from game_stuff.classes.Menu_Items.ClockWrapper import ClockWrapper, SECOND_TICK_EVENT
 from game_stuff.classes.pieces.Character import Character
 from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
@@ -23,7 +23,7 @@ FONT = pygame.font.SysFont(None, 36)
 class Game:
     def __init__(self) -> None:
         self.WINDOW_SIZE = (1000, 800)
-        self.BOARD_SIZE = 700
+        self.BOARD_SIZE = 800
         self.ROWS = 10
 
         self.x_offset = self.WINDOW_SIZE[0] - self.BOARD_SIZE
@@ -45,8 +45,10 @@ class Game:
         black_button = Button(
             20, 150, 150, 30, lambda: self.add_character("black"), "New Black"
         )
-        self.clock = Clock()
-        self.all_sprites.add(clear_button, white_button, black_button, self.clock)
+        self.clock_wrapper = ClockWrapper((20, 20))
+        self.all_sprites.add(
+            clear_button, white_button, black_button, self.clock_wrapper
+        )
 
         # Enable key repeat (delay: 400ms, interval: 50ms) - do this so the input box keys can be held down
         pygame.key.set_repeat(400, 50)
@@ -58,6 +60,7 @@ class Game:
     def reset(self):
         self.board.reset_board()
 
+    # Add a character to a random position near the base
     def add_character(self, color):
         text = self.input_box.text
         self.input_box.clear()
@@ -91,8 +94,7 @@ class Game:
         pygame.display.update()
 
     def gameloop(self):
-        self.clock.update()
-        mx, my = pygame.mouse.get_pos()
+        self.clock_wrapper.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -101,28 +103,28 @@ class Game:
                 # TODO: do somethign here
                 print("A second has passed!")
 
-            # On board
-            elif (mx >= self.x_offset) and (my >= self.y_offset):
-                board_x = mx - self.x_offset
-                board_y = my - self.y_offset
-                # Click
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    # Left Click
-                    if event.button == 1:
-                        if self.character_to_add is not None:
-                            self.board.add_character(
-                                board_x, board_y, self.character_to_add
-                            )
-                            self.character_to_add = None
-                        else:
-                            self.board.handle_click(board_x, board_y)
-
-            # On menu
+            # General events
             else:
+                self.input_box.handle_event(event)
                 self.handle_menu_click(event)
 
-            # TODO: should everything run here?
-            # Stuff that runs on its own?
-            self.input_box.handle_event(event)
-
         self.draw(self.screen)
+
+
+# Deprecated click on board code
+# On board
+# mx, my = pygame.mouse.get_pos()
+# elif (mx >= self.x_offset) and (my >= self.y_offset):
+#     board_x = mx - self.x_offset
+#     board_y = my - self.y_offset
+#     # Click
+#     if event.type == pygame.MOUSEBUTTONDOWN:
+#         # Left Click
+#         if event.button == 1:
+#             if self.character_to_add is not None:
+#                 self.board.add_character(
+#                     board_x, board_y, self.character_to_add
+#                 )
+#                 self.character_to_add = None
+#             else:
+#                 self.board.handle_click(board_x, board_y)

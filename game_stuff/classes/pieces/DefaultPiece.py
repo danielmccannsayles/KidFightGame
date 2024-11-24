@@ -1,11 +1,10 @@
-## Typing Hack -allow imports for type safety w/o causing circular..
+## Typing Hack - allow imports for type safety w/o causing circular..
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from game_stuff.classes.Square import Square
     from game_stuff.classes.Board import Board
-## End typing hack
 
 
 class DefaultPiece:
