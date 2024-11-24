@@ -137,6 +137,8 @@ class Game:
 
             # Alternate turns every second
             elif event.type == SECOND_TICK_EVENT:
+                # also don't know if this is necessary, but better to explicitly stop it here
+                pygame.time.set_timer(CHARACTER_TICK_EVENT, 0)
                 self.board.clear_highlight()
 
                 # TODO: fix clunky logic
@@ -153,9 +155,11 @@ class Game:
                 if num_c > 0:
                     self.characters_to_process = iter(characters)
 
-                    # Move first (important b.c. set timer will wait 1 interval)
+                    # Move once (important b.c. set timer will wait 1 interval)
                     self.move_character()
-                    interval = 1000 // num_c
+                    interval = (
+                        1000 - 20
+                    ) // num_c  # dunno if -20 is necessary but want to make sure it never overlaps
                     pygame.time.set_timer(CHARACTER_TICK_EVENT, interval)
 
             # Take actions for character
