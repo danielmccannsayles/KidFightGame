@@ -7,7 +7,7 @@ from llm_stuff.prompt import CHARACTER_PROMPT
 from game_stuff.events import CHARACTER_RESPONSE_EVENT
 from testing.mock_responses import TEST_CHARACTER_LIST
 
-client = openai.AsyncOpenAI(api_key=OPENAI_KEY)
+client = openai.OpenAI(api_key=OPENAI_KEY)
 
 # Returns in the following JSON structure
 """
@@ -28,41 +28,38 @@ client = openai.AsyncOpenAI(api_key=OPENAI_KEY)
 }"""
 
 
-async def agenerate_character_stats(description: str, character_list: list):
-    # Prompts
-    info = f"""
-<Current Character List>
-{character_list}
-<End Current Character List>
-
-<Description>
-{description}
-<End Description>
-    """
-
-    # Call API
-    print("calling api")
-    response = await client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": CHARACTER_PROMPT},
-            {"role": "user", "content": info},
-        ],
-        response_format={"type": "json_schema", "json_schema": API_SCHEMA},
-    )
-    print("response returned")
-    reply = json.loads(response.choices[0].message.content)
-    return reply
-
-
-async def acreate_character(
-    description, color, character_list: list = TEST_CHARACTER_LIST
+def generate_character_stats(
+    description, color, post_event, character_list=TEST_CHARACTER_LIST
 ):
-    print("acreate_character - calling generate")
-    response = await agenerate_character_stats(description, character_list)
-    print("acreate_charfacter - posting event")
-    pygame.event.post(
-        pygame.event.Event(
-            CHARACTER_RESPONSE_EVENT, {"response": response, "color": color}
+    """
+    Generates character stats by calling GPT and then posts an event with the response.
+
+    Args:
+        description (str): Description of the character to generate.
+        character_list (list): Current list of characters
+        color (str): The color of the team ('white' or 'black')
+        post_event (function): Callback to post the event back to the main thread.
+    """
+    info = f"""
+    <Current Character List>
+    {character_list}
+    <End Current Character List>
+
+    <Description>
+    {description}
+    <End Description>
+    """
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": CHARACTER_PROMPT},
+                {"role": "user", "content": info},
+            ],
+            response_format={"type": "json_schema", "json_schema": API_SCHEMA},
         )
-    )
+        reply = json.loads(response.choices[0].message.content)
+        post_event(reply, color)
+    except Exception as e:
+        print(f"Error during API call: {e}")
+        # TODO: consider handling error w/ event

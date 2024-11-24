@@ -1,5 +1,5 @@
 import pygame
-import asyncio
+import threading
 
 from game_stuff.classes.Menu_Items.Button import Button
 from game_stuff.classes.Menu_Items.ClockWrapper import ClockWrapper
@@ -8,8 +8,7 @@ from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
 from game_stuff.events import SECOND_TICK_EVENT, CHARACTER_RESPONSE_EVENT
 
-from llm_stuff.call_gpt import acreate_character
-from testing.mock_responses import LARGE_SPIKED_BALL_RESPONSE
+from llm_stuff.call_gpt import generate_character_stats
 
 # Colors
 WHITE = (255, 255, 255)
@@ -61,34 +60,34 @@ class Game:
     def reset(self):
         self.board.reset_board()
 
-    # Asynchronously generate a character
     def create_character(self, color):
         if self.loading_character:
-            # TODO: add a disabled style
-            print("still loading")
+            print("Character generation is already in progress.")
             return
 
         self.loading_character = True
-        description = self.input_box.text
-        if description == "":
-            description = "bland default character"
-
+        description = self.input_box.text or "bland default character"
         self.input_box.clear()
 
-        print(f"calling async w/ {description}, {color}")
-        # Call asynchronously
-        # run in coroutin_threadsafe to avoid blocking the game loop
-        asyncio.run_coroutine_threadsafe(
-            acreate_character(description, color), asyncio.get_event_loop()
-        )
+        # Send event back - will be listened to in game loop
+        def post_event(response, color):
+            pygame.event.post(
+                pygame.event.Event(
+                    CHARACTER_RESPONSE_EVENT, {"response": response, "color": color}
+                )
+            )
+
+        # Call API in other thread (not async)
+        threading.Thread(
+            target=generate_character_stats,
+            args=(description, color, post_event),
+            daemon=True,
+        ).start()
 
     # Add a character once its generated
-    def add_character_game(self, event_dict):
-        print(event_dict)
+    def add_character_to_game(self, event_dict):
         color = event_dict["color"]
         response = event_dict["response"]
-        print(f"adding character, {color}, {response}")
-
         base = self.board.bases[color]
         spawn = base.get_spawn()
         character = Character(  # TODO: update this to accept an object and initialize from there or sumn
@@ -126,9 +125,7 @@ class Game:
                 pass
 
             elif event.type == CHARACTER_RESPONSE_EVENT:
-                print("helo?")
-                print(f"Received custom event with data: {event.dict}")
-                self.add_character_game(event.dict)
+                self.add_character_to_game(event.dict)
                 self.loading_character = False
 
             # General events
