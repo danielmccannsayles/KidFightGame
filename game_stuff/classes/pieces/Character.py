@@ -33,17 +33,24 @@ class Character(DefaultPiece):
 
     def get_possible_moves(self):
         output = []
-        moves_north = []
-        y = range(self.y - self.movespeed, self.y + self.movespeed + 1)
-        x = range(self.x - self.movespeed, self.x + self.movespeed + 1)
 
+        # What is this??
+        y = range(self.column - self.movespeed, self.column + self.movespeed + 1)
+        x = range(self.row - self.movespeed, self.row + self.movespeed + 1)
+
+        # What is hapening? I think we are checking that we can move.. should move this to board
+        moves_north = []
         for t in y:
-            if (t >= 0) and (t < self.rows) and not (t == self.y):
-                moves_north.append(self.board.get_square_from_pos((self.x, t)))
+            if (t >= 0) and (t < self.rows) and not (t == self.column):
+                moves_north.append(self.board.get_square_from_board_pos((self.row, t)))
         output.append(moves_north)
+
+        # Same.. think we are
         moves_east = []
         for t in x:
-            if (t >= 0) and (t < self.rows) and not (t == self.x):
-                moves_east.append(self.board.get_square_from_pos((t, self.y)))
+            if (t >= 0) and (t < self.rows) and not (t == self.row):
+                moves_east.append(
+                    self.board.get_square_from_board_pos((t, self.column))
+                )
         output.append(moves_east)
         return output

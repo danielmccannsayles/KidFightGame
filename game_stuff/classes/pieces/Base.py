@@ -36,25 +36,25 @@ class Base:
 
         # Add the pieces to the board
         for piece in pieces:
-            square = board.get_square_from_pos(piece.pos)
+            square = board.get_square_from_board_pos(piece.pos)
             square.occupying_piece = piece
 
         self.pieces = pieces
 
     # TODO: get possible spawns around base
-    def get_possible_moves(self):
-        output = []
-        moves_north = []
-        y = range(self.y - self.movespeed, self.y + self.movespeed + 1)
-        x = range(self.x - self.movespeed, self.x + self.movespeed + 1)
-        print(*x, sep=",")
-        for t in y:
-            if (t >= 0) and (t < self.rows) and not (t == self.y):
-                moves_north.append(self.board.get_square_from_pos((self.x, t)))
-        output.append(moves_north)
-        moves_east = []
-        for t in x:
-            if (t >= 0) and (t < self.rows) and not (t == self.x):
-                moves_east.append(self.board.get_square_from_pos((t, self.y)))
-        output.append(moves_east)
-        return output
+    # def get_possible_moves(self):
+    #     output = []
+    #     moves_north = []
+    #     y = range(self.y - self.movespeed, self.y + self.movespeed + 1)
+    #     x = range(self.x - self.movespeed, self.x + self.movespeed + 1)
+    #     print(*x, sep=",")
+    #     for t in y:
+    #         if (t >= 0) and (t < self.rows) and not (t == self.y):
+    #             moves_north.append(self.board.get_square_from_board_pos((self.x, t)))
+    #     output.append(moves_north)
+    #     moves_east = []
+    #     for t in x:
+    #         if (t >= 0) and (t < self.rows) and not (t == self.x):
+    #             moves_east.append(self.board.get_square_from_board_pos((t, self.y)))
+    #     output.append(moves_east)
+    #     return output

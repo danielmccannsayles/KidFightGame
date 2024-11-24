@@ -1,52 +1,60 @@
-# Default Piece
+## Typing Hack -allow imports for type safety w/o causing circular..
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from game_stuff.classes.Square import Square
+    from game_stuff.classes.Board import Board
+## End typing hack
 
 
 class DefaultPiece:
     def __init__(self, pos, color, img):
         self.pos = pos
-        self.x = pos[0]
-        self.y = pos[1]
+        self.row = pos[0]
+        self.column = pos[1]
         self.color = color
         self.has_moved = False
         self.img = img
 
-    def set_xy(self, pos):
+    def set_pos(self, pos):
         self.pos = pos
-        self.x = pos[0]
-        self.y = pos[1]
+        self.row = pos[0]
+        self.column = pos[1]
 
-    def move(self, board, square, force=False):
-
+    def move(self, board: Board, square: Square):
         for i in board.squares:
             i.highlight = False
             i.attack_highlight = False
 
-        if square in self.get_moves() or force:
-            prev_square = board.get_square_from_pos(self.pos)
-            self.pos, self.x, self.y = square.pos, square.x, square.y
-
-            prev_square.occupying_piece = None
-            square.occupying_piece = self
+        # Move to a square
+        if square in self.get_moves():
+            self._move_to_square(board, square)
             board.selected_piece = None
-            self.has_moved = True
-
             return True
+
+        # Attack (if successful, move)
         elif square in self.get_valid_attacks():
             square.occupying_piece.hp = square.occupying_piece.hp - self.attack_dmg
             if square.occupying_piece.hp <= 0:
-                prev_square = board.get_square_from_pos(self.pos)
-                self.pos, self.x, self.y = square.pos, square.x, square.y
+                self._move_to_square(board, square)
 
-                prev_square.occupying_piece = None
-                square.occupying_piece = self
-                self.has_moved = True
-
-            # Moved this to prevent multi-attack. Should refactor selected & turn state
             board.selected_piece = None
             return True
+
         else:
             board.selected_piece = None
             return False
+
+    def _move_to_square(self, board: Board, square: Square):
+        # Remove from old square
+        prev_square = board.get_square_from_board_pos(self.pos)
+        prev_square.occupying_piece = None
+
+        # Add to new square
+        self.set_pos(square.get_pos())
+        square.occupying_piece = self
+        self.has_moved = True
 
     def get_moves(self):
         output = []
