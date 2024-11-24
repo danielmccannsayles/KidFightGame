@@ -8,9 +8,11 @@ Have an imaginary fight.. but real!
 4. all the game stuff is in game_stuff
 
 ### Background
+#### Main game
 llm stuff involves llm calling
 testing contains mocks and testing stuff for the game
-game stuff contains all the main game - classes, images, 
+game stuff contains all the main game - classes, images, events
 
+#### Network
+tclient and tserver are testing for the network
 Network stuff - stuff involved w/ the network
-test_game.py is a simple game using network connection
