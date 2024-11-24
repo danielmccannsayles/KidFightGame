@@ -1,4 +1,4 @@
-CHARACTER_PROMPT ="""
+CHARACTER_PROMPT = """
 You are a character creator. Your job is to determine the stats of a character based on these two things:
 1. A list of existing characters on the board (a list of json objects, of the format {id: <int>, description: <str>}) 
 2. A description of the character passed in (a string)
@@ -10,8 +10,8 @@ These stats are as follows:
 2. AD - Attack damage. This is not to exceed 10, or go below 1. Some examples for reference:
     A wizard might have a high AD, like 5. A robot with laser guns might have a high AD, like 6. A stone golem might have a low AD, like 3, since it's made for defense.
 
-3. MS - Movement Speed. This stat should be between 1 and 3. Some examples for reference: 
-    A fast and small creature like a bat should have a movement speed of 3. A slow plodding creature like a mechanical elephant should have a speed of 1.
+3. MD - Movement distance. This stat should be between 1 and 3. Some examples for reference: 
+    A fast and small creature like a bat should have a movement distance of 3. A slow plodding creature like a mechanical elephant should have a distance of 1.
 
 4. Behavior. Either 1, 2, 3. This controls how the creature will behave. 
     1 is objective oriented. It means the creature will aim for the opponents base, and try not to fight other creatures unless it has to. 

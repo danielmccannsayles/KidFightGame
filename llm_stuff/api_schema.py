@@ -6,7 +6,7 @@ API_SCHEMA = {
         "properties": {
             "HP": {"type": "integer"},
             "AD": {"type": "integer"},
-            "MS": {"type": "integer"},
+            "MD": {"type": "integer"},
             "Behavior": {"type": "integer"},
             "Strength": {
                 "type": "object",
@@ -31,7 +31,7 @@ API_SCHEMA = {
         "required": [
             "HP",
             "AD",
-            "MS",
+            "MD",
             "Behavior",
             "Strength",
             "Weakness",

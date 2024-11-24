@@ -41,6 +41,7 @@ class InputBox:
 
     def clear(self):
         self.text = ""
+        self.draw_text()
 
     def draw_text(self):
         self.txt_surface = FONT.render(self.text, True, self.color)

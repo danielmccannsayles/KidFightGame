@@ -14,11 +14,15 @@ class Board:
         self.y_offset = y_offset
         self.square_size = size // rows
         self.selected_piece = None
-        self.turn = "white"
 
         self.rows = rows
         self.squares: list[Square] = self.generate_squares()
         self.bases = self.make_bases()
+        self.characters: dict[str, list[Character]] = {"black": [], "white": []}
+
+    def print_characters(self):
+        for k, v in self.characters.items():
+            print(f"{k}: {v}")
 
     def generate_squares(self):
         output = []
@@ -47,10 +51,6 @@ class Board:
         top_base_top_left = top_row, column
         bottom_base_top_left = bottom_row, column
 
-        print("making bases")
-        print(top_base_top_left)
-        print(bottom_base_top_left)
-
         w_base = Base(top_base_top_left, "white", self)
         b_base = Base(bottom_base_top_left, "black", self)
         return {"white": w_base, "black": b_base}
@@ -66,13 +66,13 @@ class Board:
             if square.pos == pos:
                 return square
 
-    def add_character(self, square: Square, piece: Character):
-        piece.set_pos((square.row, square.column))
-
+    def add_character(self, square: Square, piece: Character, color: str):
         if square.occupying_piece:
             print("already occupied")
         else:
+            piece.set_pos((square.row, square.column))
             square.occupying_piece = piece
+            self.characters[color].append(piece)
 
     def draw(self, display):
         if self.selected_piece is not None:
@@ -85,6 +85,10 @@ class Board:
 
         for square in self.squares:
             square.draw(display)
+
+    def clear_highlight(self):
+        for square in self.squares:
+            square.highlight = False
 
     # Deprecated click methods
     # def handle_click(self, board_x, board_y):

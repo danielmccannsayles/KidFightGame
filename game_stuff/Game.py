@@ -6,7 +6,11 @@ from game_stuff.classes.Menu_Items.ClockWrapper import ClockWrapper
 from game_stuff.classes.pieces.Character import Character
 from game_stuff.classes.Board import Board
 from game_stuff.classes.Menu_Items.InputBox import InputBox
-from game_stuff.events import SECOND_TICK_EVENT, CHARACTER_RESPONSE_EVENT
+from game_stuff.events import (
+    SECOND_TICK_EVENT,
+    API_RESPONSE_EVENT,
+    CHARACTER_TICK_EVENT,
+)
 
 from llm_stuff.call_gpt import generate_character_stats
 
@@ -26,6 +30,7 @@ class Game:
         self.WINDOW_SIZE = (1000, 800)
         self.BOARD_SIZE = 800
         self.ROWS = 10
+        self.turn = "white"
 
         self.x_offset = self.WINDOW_SIZE[0] - self.BOARD_SIZE
         self.y_offset = self.WINDOW_SIZE[1] - self.BOARD_SIZE
@@ -66,6 +71,9 @@ class Game:
             return
 
         self.loading_character = True
+
+        # TODO: if they have nothing in the input box we shouldn't call gpt we should just give them the default stats here.
+        # Reason I haven't done this yet is because you'll have to add a fake timer; otherwise player can get an advantage by spamming w/ no delay
         description = self.input_box.text or "bland default character"
         self.input_box.clear()
 
@@ -73,7 +81,7 @@ class Game:
         def post_event(response, color):
             pygame.event.post(
                 pygame.event.Event(
-                    CHARACTER_RESPONSE_EVENT, {"response": response, "color": color}
+                    API_RESPONSE_EVENT, {"response": response, "color": color}
                 )
             )
 
@@ -96,9 +104,9 @@ class Game:
             board=self.board,
             attack_dmg=response["AD"],
             hp=response["HP"],
-            movespeed=response["MS"],
+            move_distance=response["MD"],
         )
-        self.board.add_character(spawn, character)
+        self.board.add_character(spawn, character, color)
 
     def handle_menu_click(self, event):
         for button in self.all_sprites:
@@ -113,18 +121,49 @@ class Game:
 
         pygame.display.update()
 
+    def move_character(self):
+        """Take the first character of characters to process and move it"""
+        character = next(self.characters_to_process, None)
+        if character:
+            character.display_moves()
+            opponent_characters = self.board.characters[self.opponent]
+            character.move_towards_closest_opponent(opponent_characters)
+
     def gameloop(self):
         self.clock_wrapper.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
 
+            # Alternate turns every second
             elif event.type == SECOND_TICK_EVENT:
-                # TODO: do somethign here
-                # print("A second has passed!")
-                pass
+                self.board.clear_highlight()
 
-            elif event.type == CHARACTER_RESPONSE_EVENT:
+                # TODO: fix clunky logic
+                if self.turn == "white":
+                    self.turn = "black"
+                    self.opponent = "white"
+                else:
+                    self.turn = "white"
+                    self.opponent = "black"
+
+                characters = self.board.characters[self.turn]
+                num_c = len(characters)
+
+                if num_c > 0:
+                    self.characters_to_process = iter(characters)
+
+                    # Move first (important b.c. set timer will wait 1 interval)
+                    self.move_character()
+                    interval = 1000 // num_c
+                    pygame.time.set_timer(CHARACTER_TICK_EVENT, interval)
+
+            # Take actions for character
+            elif event.type == CHARACTER_TICK_EVENT:
+                self.move_character()
+
+            # API responded
+            elif event.type == API_RESPONSE_EVENT:
                 self.add_character_to_game(event.dict)
                 self.loading_character = False
 

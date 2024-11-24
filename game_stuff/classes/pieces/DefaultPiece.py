@@ -21,55 +21,52 @@ class DefaultPiece:
         self.row = pos[0]
         self.column = pos[1]
 
-    def move(self, board: Board, square: Square):
-        for i in board.squares:
-            i.highlight = False
-            i.attack_highlight = False
+    # def move(self, board: Board, square: Square):
+    #     # for i in board.squares:
+    #     #     i.highlight = False
+    #     #     i.attack_highlight = False
 
-        # Move to a square
-        if square in self.get_moves():
-            self._move_to_square(board, square)
-            board.selected_piece = None
-            return True
+    #     board.selected_piece = None
 
-        # Attack (if successful, move)
-        elif square in self.get_valid_attacks():
-            square.occupying_piece.hp = square.occupying_piece.hp - self.attack_dmg
-            if square.occupying_piece.hp <= 0:
-                self._move_to_square(board, square)
+    #     # Move to a square
+    #     if square in self.get_moves():
+    #         self._move_to_square(board, square)
+    #         return True
 
-            board.selected_piece = None
-            return True
+    #     # Attack (if defeats them, move there)
+    #     elif square in self.get_valid_attacks():
+    #         square.occupying_piece.hp = square.occupying_piece.hp - self.attack_dmg
+    #         if square.occupying_piece.hp <= 0:
+    #             self._move_to_square(board, square)
+    #         return True
 
-        else:
-            board.selected_piece = None
-            return False
+    #     return False
 
-    def _move_to_square(self, board: Board, square: Square):
-        # Remove from old square
-        prev_square = board.get_square_from_board_pos(self.pos)
-        prev_square.occupying_piece = None
+    # def _move_to_square(self, board: Board, square: Square):
+    #     # Remove from old square
+    #     prev_square = board.get_square_from_board_pos(self.pos)
+    #     prev_square.occupying_piece = None
 
-        # Add to new square
-        self.set_pos(square.get_pos())
-        square.occupying_piece = self
-        self.has_moved = True
+    #     # Add to new square
+    #     self.set_pos(square.get_pos())
+    #     square.occupying_piece = self
+    #     self.has_moved = True
 
-    def get_moves(self):
-        output = []
-        for direction in self.get_possible_moves():
-            for square in direction:
-                if square.occupying_piece is None:
-                    output.append(square)
+    # def get_moves(self):
+    #     output = []
+    #     for direction in self.get_possible_moves():
+    #         for square in direction:
+    #             if square.occupying_piece is None:
+    #                 output.append(square)
 
-        return output
+    #     return output
 
-    def get_valid_attacks(self):
-        output = []
-        for direction in self.get_possible_moves():
-            for square in direction:
-                if square.occupying_piece is not None:
-                    if square.occupying_piece.color != self.color:
-                        output.append(square)
+    # def get_valid_attacks(self):
+    #     output = []
+    #     for direction in self.get_possible_moves():
+    #         for square in direction:
+    #             if square.occupying_piece is not None:
+    #                 if square.occupying_piece.color != self.color:
+    #                     output.append(square)
 
-        return output
+    #     return output

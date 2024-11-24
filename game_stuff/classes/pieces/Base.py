@@ -28,8 +28,8 @@ class Base:
         self.spawns = self._setup_spawns()
 
         # For testing highlight spawns
-        for spawn_square in self.spawns:
-            spawn_square.highlight = True
+        # for spawn_square in self.spawns:
+        #     spawn_square.highlight = True
 
     def _setup_pieces(self) -> list[DefaultPiece]:
         # Images
@@ -58,17 +58,14 @@ class Base:
     def _setup_spawns(self) -> list[Square]:
         row, column = self.top_left
         positions = set()
-        print("row, column", row, column)
 
         # Top row - check if out of bounds
         if row > 0:
-            print("not out of bounds on top")
             for c in range(column - 1, column + 3):
                 positions.add((row - 1, c))
 
         # Bottom row - check if out of bounds (3: 2 for size + 1 for 0 indexed)
         if row + 3 <= self.board.rows:
-            print("not out of bounds on bottom")
             for c in range(column - 1, column + 3):
                 positions.add((row + 2, c))
 
@@ -76,8 +73,6 @@ class Base:
         for r in range(row, row + 2):
             positions.add((r, column - 1))  # Left column
             positions.add((r, column + 2))  # Right column
-
-        print(positions)
 
         spawns: list[Square] = []
         for pos in positions:

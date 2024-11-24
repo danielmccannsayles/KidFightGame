@@ -4,7 +4,7 @@ import pygame
 from llm_stuff.secret import OPENAI_KEY
 from llm_stuff.api_schema import API_SCHEMA
 from llm_stuff.prompt import CHARACTER_PROMPT
-from game_stuff.events import CHARACTER_RESPONSE_EVENT
+from game_stuff.events import API_RESPONSE_EVENT
 from testing.mock_responses import TEST_CHARACTER_LIST
 
 client = openai.OpenAI(api_key=OPENAI_KEY)
@@ -14,7 +14,7 @@ client = openai.OpenAI(api_key=OPENAI_KEY)
 {
   "AD": 3,
   "HP": 4,
-  "MS": 3,
+  "MD": 3,
   "Behavior": 2,
   "Strength": {
     "modifier": null,
