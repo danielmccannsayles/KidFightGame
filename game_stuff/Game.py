@@ -127,7 +127,7 @@ class Game:
         if character:
             character.display_moves()
             opponent_characters = self.board.characters[self.opponent]
-            character.move_towards_closest_opponent(opponent_characters)
+            character.move_towards_closest_opponent_and_try_attack(opponent_characters)
 
     def gameloop(self):
         self.clock_wrapper.update()

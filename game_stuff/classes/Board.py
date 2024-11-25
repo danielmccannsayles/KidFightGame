@@ -1,3 +1,4 @@
+from numpy import character
 from game_stuff.classes.Square import Square
 from game_stuff.classes.pieces.Character import Character
 from game_stuff.classes.pieces.Base import Base
@@ -85,11 +86,20 @@ class Board:
 
         for square in self.squares:
             square.draw(display)
+        print(self.characters)
 
     def clear_highlight(self):
         for square in self.squares:
             square.highlight = False
+            square.attack_highlight = False
 
+    def remove_character(self, toRemove):
+        characters = []
+        for key, value in self.characters.items():
+            if toRemove.occupying_piece in value:
+                print("helpmeeeeeeeeee")
+                value.remove(toRemove.occupying_piece)
+                toRemove.occupying_piece = None
     # Deprecated click methods
     # def handle_click(self, board_x, board_y):
     #     x = board_x // self.square_size

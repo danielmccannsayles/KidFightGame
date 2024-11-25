@@ -61,12 +61,12 @@ class DefaultPiece:
 
     #     return output
 
-    # def get_valid_attacks(self):
-    #     output = []
-    #     for direction in self.get_possible_moves():
-    #         for square in direction:
-    #             if square.occupying_piece is not None:
-    #                 if square.occupying_piece.color != self.color:
-    #                     output.append(square)
-
-    #     return output
+    #def get_valid_attacks(self):
+    #    output = []
+    #    for direction in self.get_possible_moves():
+    #        for square in direction:
+    #            if square.occupying_piece is not None:
+    #                if square.occupying_piece.color != self.color:
+    #                    output.append(square)
+    #
+    #        return output
