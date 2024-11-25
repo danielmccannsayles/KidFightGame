@@ -1,13 +1,13 @@
 from multiplayer.Square import Square
-from multiplayer.Piece import Piece
+from multiplayer.Piece import Piece, PieceData, is_piece_data
 
 
 """
 We're going to communicate using a list.
-This list will be the board
+This list will be the board. It will have objects
 
 e.g:
-['.', '.', 'WB', 'WB',]
+['.', '.', '{}', '{}',]
 
 '.' are empty
 'H' is highlight? TODO: do we want to continue highlighting?
@@ -25,7 +25,7 @@ class Board:
         self.rows = rows
         self.squares: list[Square] = self.generate_squares()
 
-    def update_board(self, board_list: list[str]):
+    def update_board(self, board_list: list[str | PieceData]):
         """Update board from json data. Clear everything on squares, then re-add"""
         if len(self.squares) != len(board_list):
             print("This should not happen.. mismatch btwn server and client")
@@ -33,13 +33,13 @@ class Board:
         for data, square in zip(board_list, self.squares):
             square.occupying_piece = None
             square.highlight = False
-            if data == ".":
-                pass
-            elif data == "H":
-                square.highlight = True
-            else:
+
+            if is_piece_data(data):
                 piece = Piece(self.square_size, data)
                 square.occupying_piece = piece
+
+            elif data == "H":
+                square.highlight = True
 
     def draw(self, display):
         for square in self.squares:

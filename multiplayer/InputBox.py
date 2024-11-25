@@ -2,6 +2,7 @@ import pygame as pg
 from typing import Callable
 
 
+pg.font.init()
 COLOR_INACTIVE = pg.Color("lightskyblue3")
 COLOR_ACTIVE = pg.Color("dodgerblue2")
 FONT = pg.font.Font(None, 32)

@@ -1,4 +1,8 @@
+import pygame as pg
 from multiplayer.ClientGame import ClientGame
+
+
+pg.init()
 
 
 def main():
