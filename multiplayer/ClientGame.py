@@ -36,13 +36,9 @@ class ClientGame:
         # Enable key repeat (delay: 400ms, interval: 50ms) - do this so the input box keys can be held down
         pg.key.set_repeat(400, 50)
 
-        MOCK_BOARD = get_mock_board()
-        print(MOCK_BOARD)
-        self.update_local(MOCK_BOARD)
-        # TODO: testing board w/o server
         # Start the network and get the starting board
-        # self.n = Network()
-        # self.update_local(self.n.get_start())
+        self.n = Network()
+        self.update_local(self.n.get_start())
         self.draw()
 
     def request_new_character(self, description):
@@ -63,11 +59,9 @@ class ClientGame:
         # Cap refresh rate
         self.clock.tick(60)
 
-        # TODO: testing board w/o any server
         # Get updated board
-        # board_json = self.n.send("get")
-        # board = Board.update_board(board_json)
-        # self.update_local(board)
+        board_json = self.n.send("get")
+        self.update_local(board_json)
 
         # Handle events
         for event in pg.event.get():

@@ -1,5 +1,4 @@
 import socket
-import pickle
 import json
 
 
@@ -17,13 +16,13 @@ class Network:
         return self.start
 
     def connect(self):
-        """Connect for the first time. Returns a board object"""
+        """Connect for the first time. Returns a board list"""
         try:
             self.client.connect(self.address)
-            data = self.client.recv(1024).decode()
+            data = self.client.recv(2048).decode()
             if not data:
                 raise ValueError("No data received from the server.")
-            return pickle.loads(data)
+            return json.loads(data)
 
         except Exception as e:
             print("error connecting: ", e)
@@ -32,7 +31,7 @@ class Network:
         """Send every tick. Returns an updated board dict"""
         try:
             self.client.send("get".encode())
-            data = self.client.recv(1024).decode()
+            data = self.client.recv(2048).decode()
             if not data:
                 raise ValueError("No data received from the server.")
             return json.loads(data)
