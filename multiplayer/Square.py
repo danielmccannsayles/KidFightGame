@@ -40,16 +40,18 @@ class Square:
         color = self.highlight_color if self.highlight else self.draw_color
         pygame.draw.rect(display, color, self.rect)
 
-        if self.occupying_piece != None:
-            centering_rect = self.occupying_piece.img.get_rect()
-            centering_rect.center = self.rect.center
-            display.blit(self.occupying_piece.img, centering_rect.topleft)
+        piece = self.occupying_piece
 
-            # HP bar
-            if hasattr(self.occupying_piece, "hp"):
+        if piece != None:
+            centering_rect = piece.img.get_rect()
+            centering_rect.center = self.rect.center
+            display.blit(piece.img, centering_rect.topleft)
+
+            # HP bar - if exists and not equal to none
+            if hasattr(piece, "hp") and piece.hp:
                 pygame.draw.rect(display, self.hp_color, self.hp_rect)
 
-                hptext = str(self.occupying_piece.hp)
+                hptext = str(piece.hp)
                 number_image = self.number_font.render(
                     hptext, True, (10, 10, 10), (255, 255, 255)
                 )

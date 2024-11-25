@@ -48,4 +48,4 @@ class Piece:
         self.img = img
 
         # Eventaully everything will have hp?? For now allow it to be None..
-        self.hp = data["hp"]
+        self.hp = data["hp"] if "hp" in data else None
