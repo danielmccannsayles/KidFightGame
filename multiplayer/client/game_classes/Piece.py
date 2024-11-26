@@ -33,13 +33,13 @@ class Piece:
     def __init__(self, size, data: PieceData):
         match data["type"]:
             case "WC":
-                img_path = f"{current_dir}/imgs/brutal-helm.png"
+                img_path = f"{current_dir}/../imgs/brutal-helm.png"
             case "BC":
-                img_path = f"{current_dir}/imgs/orc-head.png"
+                img_path = f"{current_dir}/../imgs/orc-head.png"
             case "WB":
-                img_path = f"{current_dir}/imgs/w_rook.png"
+                img_path = f"{current_dir}/../imgs/w_rook.png"
             case "BB":
-                img_path = f"{current_dir}/imgs/b_rook.png"
+                img_path = f"{current_dir}/../imgs/b_rook.png"
             case _:
                 print("invalid piece type")
 

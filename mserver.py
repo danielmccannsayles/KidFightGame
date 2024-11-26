@@ -11,6 +11,7 @@ from _thread import start_new_thread
 from multiplayer.client.helpers import get_mock_board
 import json
 import time
+from multiplayer.server.ServerGame import ServerGame
 
 
 server = "10.0.0.178"
@@ -29,6 +30,8 @@ print("Waiting for a connection, Server Started")
 MOCK_BOARD1 = get_mock_board()
 MOCK_BOARD2 = get_mock_board()
 
+# server_game = ServerGame()
+
 
 def threaded_client(conn: socket.socket):
     initial = json.dumps(MOCK_BOARD1).encode()
@@ -42,7 +45,10 @@ def threaded_client(conn: socket.socket):
 
     reply = ""
     while True:
-        # TODO: we need to run a game loop here
+        # how to pass in recieved data?
+        # server_game.gameloop()
+
+        # Handle sending ?
 
         # Every 5 seconds flip the one we send
         current_time = time.time()

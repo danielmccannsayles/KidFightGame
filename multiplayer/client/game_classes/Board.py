@@ -1,5 +1,5 @@
-from multiplayer.client.Square import Square
-from multiplayer.client.Piece import Piece, PieceData, is_piece_data
+from multiplayer.client.game_classes.Square import Square
+from multiplayer.client.game_classes.Piece import Piece, PieceData, is_piece_data
 
 
 """

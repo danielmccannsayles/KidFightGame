@@ -1,11 +1,10 @@
 import pygame as pg
 
-from multiplayer.client.Board import Board
-from multiplayer.client.InputBox import InputBox
+from multiplayer.client.game_classes.Board import Board
+from multiplayer.client.game_classes.InputBox import InputBox
 import pygame as pg
-from multiplayer.client.network import Network
-from multiplayer.client.Board import Board
-from multiplayer.client.helpers import get_mock_board
+from multiplayer.client.Network import Network
+from multiplayer.client.game_classes.Board import Board
 
 # Colors
 WHITE = (255, 255, 255)
