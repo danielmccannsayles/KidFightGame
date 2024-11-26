@@ -47,5 +47,5 @@ class Piece:
         img = pg.transform.scale(img, (size - 20, size - 20))
         self.img = img
 
-        # Eventaully everything will have hp?? For now allow it to be None..
+        # Eventually everything will have hp?? For now allow it to be None..
         self.hp = data["hp"] if "hp" in data else None

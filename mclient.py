@@ -1,5 +1,5 @@
 import pygame as pg
-from multiplayer.ClientGame import ClientGame
+from multiplayer.client.ClientGame import ClientGame
 
 
 pg.init()

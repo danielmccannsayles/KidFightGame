@@ -8,7 +8,7 @@
 
 import socket
 from _thread import start_new_thread
-from multiplayer.helpers import get_mock_board
+from multiplayer.client.helpers import get_mock_board
 import json
 import time
 
@@ -42,6 +42,8 @@ def threaded_client(conn: socket.socket):
 
     reply = ""
     while True:
+        # TODO: we need to run a game loop here
+
         # Every 5 seconds flip the one we send
         current_time = time.time()
         if current_time - last_trigger_time >= interval:
