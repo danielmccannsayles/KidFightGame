@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from multiplayer.server.Board import Board
+    from multiplayer.server.classes.Board import Board
 
 
-from multiplayer.server.DefaultPiece import DefaultPiece
+from multiplayer.server.classes.DefaultPiece import DefaultPiece
 import random
 
 
@@ -34,7 +34,7 @@ class Base:
 
         # Add to board
         for piece in pieces:
-            self.board.add_piece_safe(piece.pos, piece, self.color)
+            self.board.add_piece_safe(piece.pos, piece)
         return pieces
 
     def _setup_spawns(self) -> list[list[tuple[int, int]]]:
@@ -59,10 +59,11 @@ class Base:
 
         return positions
 
-    def get_open_spawn(self):
+    def get_open_spawn_pos(self):
+        """Return random open spawn position"""
         open_squares = [
             spawn
             for spawn in self.spawns
-            if self.board.check_if_occupied(self.board.get_pos(spawn))
+            if not self.board.check_if_occupied(self.board.get_pos(spawn))
         ]
         return random.choice(open_squares)

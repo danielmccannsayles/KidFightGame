@@ -11,6 +11,13 @@ class Board:
         self.bases = self.make_bases()
         self.characters: dict[str, list[Character]] = {"black": [], "white": []}
 
+    def to_json(self):
+        """Got through the squares and serialize each of them and return it. Returns a flattened list"""
+        flat_squares = [square for columns in self.squares for square in columns]
+        json_list = [square.to_json() for square in flat_squares]
+
+        return json_list
+
     def generate_squares(self):
         output: list[list[Square]] = []
         for row in range(self.rows):
@@ -34,11 +41,11 @@ class Board:
         b_base = Base(bottom_base_top_left, "black", self)
         return {"white": w_base, "black": b_base}
 
-    def add_piece_safe(self, pos: tuple[int], piece: DefaultPiece, color: str):
+    def add_piece_safe(self, pos: tuple[int], piece: DefaultPiece):
         """Add the given piece to the given position on the board. Fails quietly w/ console log. Sets the pieces position to square position"""
         square = self.get_pos(pos)
         if not square:
-            print("invalid square")
+            print("invalid square", pos)
             return
         if self.check_if_occupied(square):
             print("already occupied")
@@ -46,7 +53,6 @@ class Board:
 
         square.occupying_piece = piece
         piece.set_pos((square.row, square.column))
-        self.characters[color].append(piece)
 
     def move_piece_to_pos(self, new_pos: tuple[int], piece: DefaultPiece):
         """Move piece and clear previous square"""
@@ -74,9 +80,9 @@ class Board:
     def get_pos(self, pos: tuple[int]):
         row = pos[0]
         column = pos[1]
-        if not (row > 0 and row < self.rows):
+        if row < 0 or row >= self.rows:
             return False
-        if not (column > 0 and column < self.rows):
+        if column < 0 or column >= self.rows:
             return False
         return self.squares[pos[0]][pos[1]]
 

@@ -11,6 +11,6 @@ class DefaultPiece:
         self.row = pos[0]
         self.column = pos[1]
 
-    # TODO -
+    # Override this
     def to_json(self):
-        pass
+        return {"type": self.piece_type}

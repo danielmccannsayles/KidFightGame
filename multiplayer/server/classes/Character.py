@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from multiplayer.server.Board import Board
+    from multiplayer.server.classes.Board import Board
 
 from collections import deque
-from multiplayer.server.DefaultPiece import DefaultPiece
+from multiplayer.server.classes.DefaultPiece import DefaultPiece
 import math
 
 
@@ -25,9 +25,8 @@ class Character(DefaultPiece):
         self.hp = self.max_hp
         self.board = board
 
-    # TODO: implement thi
-    def to_json():
-        pass
+    def to_json(self):
+        return {"type": self.piece_type, "hp": self.hp}
 
     def display_moves(self):
         self.board.clear_highlight()

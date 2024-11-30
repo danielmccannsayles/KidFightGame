@@ -27,10 +27,11 @@ class Network:
         except Exception as e:
             print("error connecting: ", e)
 
-    def send(self, data):
-        """Send every tick. Returns an updated board dict"""
+    def send(self, data: dict):
+        """Send a json object every tick. Returns a dict with 'board' and 'loading'"""
         try:
-            self.client.send("get".encode())
+            json_data = json.dumps(data).encode()
+            self.client.send(json_data)
             data = self.client.recv(2048).decode()
             if not data:
                 raise ValueError("No data received from the server.")

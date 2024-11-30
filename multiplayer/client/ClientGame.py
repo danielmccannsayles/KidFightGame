@@ -35,6 +35,9 @@ class ClientGame:
         # Enable key repeat (delay: 400ms, interval: 50ms) - do this so the input box keys can be held down
         pg.key.set_repeat(400, 50)
 
+        self.character_description = None
+        self.loading = False
+
         # Start the network and get the starting board
         self.n = Network()
         self.update_local(self.n.get_start())
@@ -42,11 +45,21 @@ class ClientGame:
 
     def request_new_character(self, description):
         """Called on enter of input box"""
-        print(f"new char requested w/ {description}")
+        if self.loading:
+            print(f"still loading..")
+            return
 
-    def update_local(self, board_list: list):
-        """Update the local board"""
+        print(f"new char requested w/ {description}")
+        self.character_description = description
+
+    def update_local(self, recieve_obj):
+        """Update local values"""
+        board_list = recieve_obj["board"]
+        loading = recieve_obj["loading"]
         self.board.update_board(board_list)
+
+        # TODO: gray out the button?
+        self.loading = loading
 
     def draw(self):
         self.screen.fill("white")
@@ -58,9 +71,15 @@ class ClientGame:
         # Cap refresh rate
         self.clock.tick(60)
 
-        # Get updated board
-        board_json = self.n.send("get")
-        self.update_local(board_json)
+        # If we have something to send, add it to send_obj
+        send_obj = {}
+        if self.character_description:
+            send_obj["description"] = self.character_description
+            self.character_description = None
+
+        # Get from server
+        recieve_obj = self.n.send(send_obj)
+        self.update_local(recieve_obj)
 
         # Handle events
         for event in pg.event.get():

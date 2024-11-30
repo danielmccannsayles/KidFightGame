@@ -28,7 +28,11 @@ class Board:
     def update_board(self, board_list: list[str | PieceData]):
         """Update board from json data. Clear everything on squares, then re-add"""
         if len(self.squares) != len(board_list):
-            print("This should not happen.. mismatch btwn server and client")
+            print(
+                "This should not happen.. mismatch btwn server and client ",
+                len(self.squares),
+                len(board_list),
+            )
 
         for data, square in zip(board_list, self.squares):
             square.occupying_piece = None

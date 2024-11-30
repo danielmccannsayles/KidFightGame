@@ -1,13 +1,13 @@
 import time
 import threading
-from llm_stuff.call_gpt import generate_character_stats
+from llm_stuff.call_gpt import generate_character_stats_multiplayer
 from multiplayer.server.classes.Board import Board
 from multiplayer.server.classes.Character import Character
 
 
 class Clock:
     def __init__(self, interval):
-        """interval in seconds"""
+        """Interval in seconds"""
         self.interval = interval * 1000
         self.last_time = time.time()
 
@@ -25,44 +25,16 @@ class ServerGame:
     def __init__(self):
         self.clock = Clock(1)
 
-        self.loading_character = False
-        self.character_to_add = None
+        self.loading_character = {"white": False, "black": False}
+        self.character_to_add = {"white": None, "black": None}
 
         # Board object for representation.
-        self.board = Board()
+        self.board = Board(10)
 
-    def create_character(self, color, description: str):
-        "Call gpt to create a character. Currently making a new thread to do so. daemon means it will be terminated"
-        if self.loading_character:
-            print("Character generation is already in progress.")
-            return
-
-        self.loading_character = True
-        description = description or "bland default character"
-
-        # Send this back - will self work?
-        def post_event(self, response, color):
-            self.character_to_add = {"response": response, "color": color}
-
-        # Call API in other thread (not async)
-        # TODO: make sure this works now that game is in a threaded context
-        threading.Thread(
-            target=generate_character_stats,
-            args=(self, description, color, post_event),
-            daemon=True,
-        ).start()
-
-    def add_character_to_game(
-        self,
-    ):
-        """Call after the character is ready to be added"""
-        color = self.character_to_add["color"]
-        response = self.character_to_add["response"]
-
-        base = self.board.bases[color]
-        spawn = base.get_spawn()
-
-        character = Character(
+    def callback(self, response, color):
+        """Callback is a method to have access to self"""
+        print("callback called")
+        self.character_to_add[color] = Character(
             (0, 0),
             color=color,
             board=self.board,
@@ -70,16 +42,48 @@ class ServerGame:
             hp=response["HP"],
             move_distance=response["MD"],
         )
-        self.board.add_character(spawn, character, color)
 
-    def gameloop(self):
-        # Do game logic
+    def create_character(self, color, description: str):
+        "Call gpt to create a character. Currently making a new thread to do so. daemon means it will be terminated"
+        if self.loading_character[color]:
+            print("Character generation is already in progress.")
+            return
+
+        self.loading_character[color] = True
+        description = description or "bland default character"
+
+        # Call API in other thread (not async)
+        # TODO: make sure this works now that game is in a threaded context
+        threading.Thread(
+            target=generate_character_stats_multiplayer,
+            args=(description, color, self.callback),
+            daemon=True,
+        ).start()
+
+    def add_character_to_game(self, character: Character):
+        """Call after the character is ready to be added"""
+        print("character exists on game class. Adding it..")
+        base = self.board.bases[character.color]
+        spawn_pos = base.get_open_spawn_pos()
+        self.board.add_piece_safe(spawn_pos, character)
+        self.board.characters[character.color].append(character)
+
+    def gameloop(self, color):
+        """Runs constantly in while loop"""
+        # TODO: how can I only do the game logic for the color that's on board??
+        # DUnno yet.. for now just do nothing
         if self.clock.check():
             # do piece stuff
             pass
 
-        # Do we need to handle recieving info or sending it here?
+        # Check if we need to add a character
+        character = self.character_to_add[color]
+        if character:
+            print("game loop: character to add")
+            self.add_character_to_game(character)
+            self.loading_character[color] = False
+            self.character_to_add[color] = None
+            print("game loop: finished adding character")
 
-        if self.character_to_add:
-            self.add_character_to_game()
-            self.loading_character = False
+        # Return current board
+        return self.board.to_json(), self.loading_character[color]

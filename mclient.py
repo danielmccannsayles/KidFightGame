@@ -7,7 +7,6 @@ pg.init()
 
 def main():
     game = ClientGame()
-
     while True:
         game.gameloop()
 
