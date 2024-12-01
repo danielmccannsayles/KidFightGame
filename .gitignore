@@ -1,4 +1,6 @@
 .venv
 secret.py
+server_address.py
+
 
 __pycache__
