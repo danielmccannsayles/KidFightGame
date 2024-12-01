@@ -1,8 +1,8 @@
 import time
 import threading
-from llm_stuff.call_gpt import generate_character_stats_multiplayer
-from multiplayer.server.classes.Board import Board
-from multiplayer.server.classes.Character import Character
+from llm.call_gpt import generate_character_stats_multiplayer
+from server.classes.Board import Board
+from server.classes.Character import Character
 
 
 class Clock:

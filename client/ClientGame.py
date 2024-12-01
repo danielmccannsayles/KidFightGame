@@ -1,8 +1,8 @@
 import pygame as pg
 
-from multiplayer.client.game_classes.Board import Board
-from multiplayer.client.game_classes.InputBox import InputBox
-from multiplayer.client.network import Network
+from client.game_classes.Board import Board
+from client.game_classes.InputBox import InputBox
+from client.network import Network
 
 
 # Colors

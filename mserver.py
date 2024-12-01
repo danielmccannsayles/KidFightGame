@@ -1,20 +1,13 @@
 # IT's server time baby!!
 
-
-# we want our server to ... make a new thread and send a board object back when it connects
-
-# For now I'm not going to code any logic. Just send back a random board.
-# Test server
-
 import socket
 from _thread import start_new_thread
-from multiplayer.client.helpers import get_mock_board
+from client.helpers import get_mock_board
 import json
-import time
-from multiplayer.server.ServerGame import ServerGame
+from server.ServerGame import ServerGame
+from server_address import SERVER_ADDRESS
 
-
-server = "10.0.0.178"
+server = SERVER_ADDRESS
 port = 5555
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

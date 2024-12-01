@@ -9,10 +9,17 @@ Have an imaginary fight.. but real!
 
 ### Background
 #### Main game
-llm stuff involves llm calling
-testing contains mocks and testing stuff for the game
-game stuff contains all the main game - classes, images, events
+llm folder contains llm calling.  
+testing contains mocks and testing stuff for the game.  
+client contains clientside UI renderingk, pygame, and network (allows for clientside communication w/ server).  
+server contains all game logic & handlers, clocks, methods, etc.  
 
-#### Network
+#### Old stuff
+
+##### Game_v1
+Contains the game before its logic & UI were split up and it was turned into multiplayer
+
+##### Network Game
 tclient and tserver are testing for the network
 Network stuff - stuff involved w/ the network
+

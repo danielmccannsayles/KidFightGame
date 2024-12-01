@@ -1,7 +1,7 @@
-from multiplayer.server.classes.DefaultPiece import DefaultPiece
-from multiplayer.server.classes.Base import Base
-from multiplayer.server.classes.Character import Character
-from multiplayer.server.classes.Square import Square
+from server.classes.DefaultPiece import DefaultPiece
+from server.classes.Base import Base
+from server.classes.Character import Character
+from server.classes.Square import Square
 
 
 class Board:

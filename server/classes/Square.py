@@ -1,4 +1,4 @@
-from multiplayer.server.classes.DefaultPiece import DefaultPiece
+from server.classes.DefaultPiece import DefaultPiece
 
 
 class Square:

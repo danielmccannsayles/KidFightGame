@@ -1,5 +1,5 @@
 import pygame
-from multiplayer.client.game_classes.Piece import Piece
+from client.game_classes.Piece import Piece
 
 COLORS = {"light": (241, 211, 170), "dark": (180, 126, 82)}
 HIGHLIGHT = {"light": (150, 255, 100), "dark": (50, 220, 0)}

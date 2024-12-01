@@ -1,5 +1,6 @@
 import socket
 import json
+from server_address import SERVER_ADDRESS
 
 
 class Network:
@@ -7,7 +8,7 @@ class Network:
 
     def __init__(self) -> None:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "10.0.0.178"
+        self.server = SERVER_ADDRESS
         self.port = 5555
         self.address = (self.server, self.port)
         self.start = self.connect()

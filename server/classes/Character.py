@@ -3,10 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from multiplayer.server.classes.Board import Board
+    from server.classes.Board import Board
 
 from collections import deque
-from multiplayer.server.classes.DefaultPiece import DefaultPiece
+from server.classes.DefaultPiece import DefaultPiece
 import math
 
 
