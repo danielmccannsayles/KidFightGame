@@ -5,7 +5,7 @@ from _thread import start_new_thread
 from client.helpers import get_mock_board
 import json
 from server.ServerGame import ServerGame
-from server_address import SERVER_ADDRESS
+from address import SERVER_ADDRESS
 
 server = SERVER_ADDRESS
 port = 5555

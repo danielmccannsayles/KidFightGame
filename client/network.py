@@ -1,6 +1,6 @@
 import socket
 import json
-from server_address import SERVER_ADDRESS
+from address import SERVER_ADDRESS
 
 
 class Network:
