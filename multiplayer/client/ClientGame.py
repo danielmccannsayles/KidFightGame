@@ -2,9 +2,8 @@ import pygame as pg
 
 from multiplayer.client.game_classes.Board import Board
 from multiplayer.client.game_classes.InputBox import InputBox
-import pygame as pg
-from multiplayer.client.Network import Network
-from multiplayer.client.game_classes.Board import Board
+from multiplayer.client.network import Network
+
 
 # Colors
 WHITE = (255, 255, 255)
