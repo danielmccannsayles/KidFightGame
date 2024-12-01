@@ -5,7 +5,11 @@ Have an imaginary fight.. but real!
 
 1. Create a new venv, and activate it
 2. Pip install -r requirements.txt
-4. all the game stuff is in game_stuff
+3. Set server_address.py to the local ip address of the computer that will run the server
+4. Run mserver.py
+5. Run mclient.py on two different machines or terminals
+6. Be creative!
+
 
 ### Background
 #### Main game
