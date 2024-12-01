@@ -64,6 +64,6 @@ class Base:
         open_squares = [
             spawn
             for spawn in self.spawns
-            if not self.board.check_if_occupied(self.board.get_pos(spawn))
+            if not self.board.check_if_occupied_pos(spawn)
         ]
         return random.choice(open_squares)

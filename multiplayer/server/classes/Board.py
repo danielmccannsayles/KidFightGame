@@ -57,25 +57,29 @@ class Board:
     def move_piece_to_pos(self, new_pos: tuple[int], piece: DefaultPiece):
         """Move piece and clear previous square"""
         new_square = self.get_pos(new_pos)
-        old_square = self.get_pos(piece.pos)
-        if not new_square or not old_square:
+        if not new_square:
             print("invalid square")
             return
         if self.check_if_occupied(new_square):
             print("already occupied")
             return
 
-        self.clear_square(old_square)
+        self.clear_square_pos(piece.pos)
         new_square.occupying_piece = piece
         piece.set_pos((new_square.row, new_square.column))
 
-    def clear_square(self, pos: tuple[int]):
+    def clear_square_pos(self, pos: tuple[int]):
         square = self.get_pos(pos)
         if square:
             square.occupying_piece = None
 
     def check_if_occupied(self, square: Square):
         return square.occupying_piece != None
+
+    def check_if_occupied_pos(self, pos: tuple[int]):
+        square = self.get_pos(pos)
+        if square:
+            return square.occupying_piece != None
 
     def get_pos(self, pos: tuple[int]):
         row = pos[0]

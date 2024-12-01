@@ -108,7 +108,7 @@ class Character(DefaultPiece):
                     next_square = (new_row, new_col)
 
                     # Only move into unoccupied squares
-                    if not self.board.check_if_occupied(next_square):
+                    if not self.board.check_if_occupied_pos(next_square):
                         queue.append((new_row, new_col, distance + 1))
 
         return valid_moves
