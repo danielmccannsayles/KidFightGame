@@ -63,3 +63,40 @@ def generate_character_stats(
     except Exception as e:
         print(f"Error during API call: {e}")
         # TODO: consider handling error w/ event
+
+
+def generate_character_stats_multiplayer(
+    description, color, callback, character_list=TEST_CHARACTER_LIST
+):
+    """
+    Same as above but for multiplayer
+
+    Args:
+        description (str): Description of the character to generate.
+        character_list (list): Current list of characters
+        color (str): The color of the team ('white' or 'black')
+        post_event (function): Callback to return data
+    """
+    info = f"""
+    <Current Character List>
+    {character_list}
+    <End Current Character List>
+
+    <Description>
+    {description}
+    <End Description>
+    """
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": CHARACTER_PROMPT},
+                {"role": "user", "content": info},
+            ],
+            response_format={"type": "json_schema", "json_schema": API_SCHEMA},
+        )
+        reply = json.loads(response.choices[0].message.content)
+        callback(reply, color)
+    except Exception as e:
+        print(f"Error during API call: {e}")
+        # TODO: consider handling error w/ event
